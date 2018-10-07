@@ -4,6 +4,11 @@ DEPS = rabbit_common rabbit amqp_client
 
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
 
+elixir_srcs  := mix.exs
+
+app:: $(elixir_srcs) deps
+	$(MIX) make_all
+
 # FIXME: Use erlang.mk patched for RabbitMQ, while waiting for PRs to be
 # reviewed and merged.
 
