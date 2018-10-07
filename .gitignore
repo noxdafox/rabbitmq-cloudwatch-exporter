@@ -1,0 +1,10 @@
+_build
+deps
+*.beam
+log*
+*.plt
+mix.lock
+plugins
+GPATH
+GRTAGS
+GTAGS
