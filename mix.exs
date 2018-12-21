@@ -15,12 +15,17 @@ defmodule RabbitMQ.MetricsCollectorPlugin.Mixfile do
 
   def application do
     [
-      applications: [:rabbit, :mnesia],
+      applications: [:logger, :rabbit, :mnesia],
     ]
   end
 
   defp deps(deps_dir) do
     [
+      {:ex_aws, "~> 2.0"},
+      {:configparser_ex, "~> 2.0"},
+      {:ex_aws_cloudwatch, github: "ex-aws/ex_aws_cloudwatch"},
+      {:poison, "~> 1.1"},
+      {:httpoison, "~> 1.0"},
       {
         :rabbit,
         path: Path.join(deps_dir, "rabbit"),
@@ -30,6 +35,12 @@ defmodule RabbitMQ.MetricsCollectorPlugin.Mixfile do
       {
         :rabbit_common,
         path: Path.join(deps_dir, "rabbit_common"),
+        compile: "true",
+        override: true
+      },
+      {
+        :rabbitmq_management,
+        path: Path.join(deps_dir, "rabbitmq_management"),
         compile: "true",
         override: true
       }

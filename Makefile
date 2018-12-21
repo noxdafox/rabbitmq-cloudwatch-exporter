@@ -1,7 +1,6 @@
 PROJECT = rabbitmq_metrics_collector
 
-DEPS = rabbit_common rabbit amqp_client
-
+DEPS = rabbit_common rabbit rabbitmq_management
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
 
 elixir_srcs  := mix.exs
