@@ -3,7 +3,7 @@ defmodule RabbitMQ.MetricsCollectorPlugin.Mixfile do
 
   def project do
     [
-      app: :rabbitmq_metrics_collector,
+      app: :rabbitmq_cloudwatch_exporter,
       version: "0.0.1",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -16,6 +16,7 @@ defmodule RabbitMQ.MetricsCollectorPlugin.Mixfile do
   def application do
     [
       applications: [:logger, :rabbit, :mnesia],
+      mod: {RabbitMQ.MetricsCollectorPlugin.Application, []}
     ]
   end
 
@@ -23,7 +24,7 @@ defmodule RabbitMQ.MetricsCollectorPlugin.Mixfile do
     [
       {:ex_aws, "~> 2.0"},
       {:configparser_ex, "~> 2.0"},
-      {:ex_aws_cloudwatch, github: "ex-aws/ex_aws_cloudwatch"},
+      {:ex_aws_cloudwatch, "~> 2.0.4"},
       {:poison, "~> 1.1"},
       {:httpoison, "~> 1.0"},
       {
