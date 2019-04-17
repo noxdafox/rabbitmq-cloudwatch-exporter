@@ -1,9 +1,9 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.ChannelMetrics do
+defmodule RabbitMQ.CloudWatchExporter.ChannelMetrics do
 
-  require RabbitMQ.MetricsCollectorPlugin.Common
+  require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
-  alias RabbitMQ.MetricsCollectorPlugin.Common, as: Common
+  alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
   def collect_channel_metrics() do
     RabbitMGMTDB.get_all_channels(Common.no_range)

@@ -1,10 +1,10 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.NodeMetrics do
+defmodule RabbitMQ.CloudWatchExporter.NodeMetrics do
 
-  require RabbitMQ.MetricsCollectorPlugin.Common
+  require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_mnesia, as: RabbitMnesia
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
-  alias RabbitMQ.MetricsCollectorPlugin.Common, as: Common
+  alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
   def collect_node_metrics() do
     list_nodes()

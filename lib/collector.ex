@@ -1,16 +1,16 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.Collector do
+defmodule RabbitMQ.CloudWatchExporter.Collector do
 
   use Task
 
   alias :timer, as: Timer
   alias :rabbit_nodes, as: RabbitNodes
-  alias RabbitMQ.MetricsCollectorPlugin.OverviewMetrics, as: OverviewMetrics
-  alias RabbitMQ.MetricsCollectorPlugin.VHostMetrics, as: VHostMetrics
-  alias RabbitMQ.MetricsCollectorPlugin.ExchangeMetrics, as: ExchangeMetrics
-  alias RabbitMQ.MetricsCollectorPlugin.QueueMetrics, as: QueueMetrics
-  alias RabbitMQ.MetricsCollectorPlugin.NodeMetrics, as: NodeMetrics
-  alias RabbitMQ.MetricsCollectorPlugin.ConnectionMetrics, as: ConnectionMetrics
-  alias RabbitMQ.MetricsCollectorPlugin.ChannelMetrics, as: ChannelMetrics
+  alias RabbitMQ.CloudWatchExporter.OverviewMetrics, as: OverviewMetrics
+  alias RabbitMQ.CloudWatchExporter.VHostMetrics, as: VHostMetrics
+  alias RabbitMQ.CloudWatchExporter.ExchangeMetrics, as: ExchangeMetrics
+  alias RabbitMQ.CloudWatchExporter.QueueMetrics, as: QueueMetrics
+  alias RabbitMQ.CloudWatchExporter.NodeMetrics, as: NodeMetrics
+  alias RabbitMQ.CloudWatchExporter.ConnectionMetrics, as: ConnectionMetrics
+  alias RabbitMQ.CloudWatchExporter.ChannelMetrics, as: ChannelMetrics
 
   @appname :rabbitmq_cloudwatch_exporter
   @collectors %{:overview => &OverviewMetrics.collect_overview_metrics/0,

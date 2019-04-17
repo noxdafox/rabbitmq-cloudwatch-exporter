@@ -1,4 +1,4 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.Common do
+defmodule RabbitMQ.CloudWatchExporter.Common do
 
   alias :rabbit_vhost, as: RabbitVHost
 

@@ -1,8 +1,8 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.Application do
+defmodule RabbitMQ.CloudWatchExporter.Application do
   use Application
 
   def start(_type, _args) do
-    children = [RabbitMQ.MetricsCollectorPlugin.Collector]
+    children = [RabbitMQ.CloudWatchExporter.Collector]
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end

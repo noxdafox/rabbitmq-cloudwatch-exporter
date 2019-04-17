@@ -1,11 +1,11 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.QueueMetrics do
+defmodule RabbitMQ.CloudWatchExporter.QueueMetrics do
 
-  require RabbitMQ.MetricsCollectorPlugin.Common
+  require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_amqqueue, as: RabbitQueue
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
-  alias RabbitMQ.MetricsCollectorPlugin.Common, as: Common
+  alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
   def collect_queue_metrics() do
     Common.list_vhosts()

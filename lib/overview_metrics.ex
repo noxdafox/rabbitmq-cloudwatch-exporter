@@ -1,9 +1,9 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.OverviewMetrics do
+defmodule RabbitMQ.CloudWatchExporter.OverviewMetrics do
 
-  require RabbitMQ.MetricsCollectorPlugin.Common
+  require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
-  alias RabbitMQ.MetricsCollectorPlugin.Common, as: Common
+  alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
   def collect_overview_metrics() do
     RabbitMGMTDB.get_overview(Common.no_range) |> overview_metrics()

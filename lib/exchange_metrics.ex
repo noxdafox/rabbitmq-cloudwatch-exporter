@@ -1,11 +1,11 @@
-defmodule RabbitMQ.MetricsCollectorPlugin.ExchangeMetrics do
+defmodule RabbitMQ.CloudWatchExporter.ExchangeMetrics do
 
-  require RabbitMQ.MetricsCollectorPlugin.Common
+  require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_exchange, as: RabbitExchange
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
-  alias RabbitMQ.MetricsCollectorPlugin.Common, as: Common
+  alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
   def collect_exchange_metrics() do
     Common.list_vhosts()
