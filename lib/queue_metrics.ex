@@ -1,4 +1,7 @@
 defmodule RabbitMQ.CloudWatchExporter.QueueMetrics do
+  @moduledoc """
+  Collects Queue related metrics.
+  """
 
   require RabbitMQ.CloudWatchExporter.Common
 
@@ -7,6 +10,10 @@ defmodule RabbitMQ.CloudWatchExporter.QueueMetrics do
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
   alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
+  @doc """
+  Collect Queue metrics in AWS CW format.
+  """
+  @spec collect_queue_metrics() :: List.t
   def collect_queue_metrics() do
     Common.list_vhosts()
       |> Enum.flat_map(&RabbitQueue.list/1)
@@ -41,7 +48,7 @@ defmodule RabbitMQ.CloudWatchExporter.QueueMetrics do
       |> Keyword.get(:backing_queue_status, %{})
       |> Map.get(:priority_lengths, [])
       |> Enum.map(fn({level, size}) ->
-                    [metric_name: "PriorityLevel#{level}",
+                    [metric_name: "LengthPriorityLevel#{level}",
                      unit: "Count",
                      value: size]
                   end)

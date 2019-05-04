@@ -1,4 +1,7 @@
 defmodule RabbitMQ.CloudWatchExporter.NodeMetrics do
+  @moduledoc """
+  Collects Node related metrics.
+  """
 
   require RabbitMQ.CloudWatchExporter.Common
 
@@ -6,6 +9,10 @@ defmodule RabbitMQ.CloudWatchExporter.NodeMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
+  @doc """
+  Collect Node metrics in AWS CW format.
+  """
+  @spec collect_node_metrics() :: List.t
   def collect_node_metrics() do
     list_nodes()
       |> RabbitMGMTDB.augment_nodes(Common.no_range)

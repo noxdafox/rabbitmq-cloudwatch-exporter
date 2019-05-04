@@ -1,4 +1,7 @@
 defmodule RabbitMQ.CloudWatchExporter.ExchangeMetrics do
+  @moduledoc """
+  Collects Exchange related metrics.
+  """
 
   require RabbitMQ.CloudWatchExporter.Common
 
@@ -7,6 +10,10 @@ defmodule RabbitMQ.CloudWatchExporter.ExchangeMetrics do
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
   alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
+  @doc """
+  Collect Exchange metrics in AWS CW format.
+  """
+  @spec collect_exchange_metrics() :: List.t
   def collect_exchange_metrics() do
     Common.list_vhosts()
       |> Enum.flat_map(&RabbitExchange.info_all/1)
@@ -20,6 +27,7 @@ defmodule RabbitMQ.CloudWatchExporter.ExchangeMetrics do
                   {"Exchange", Keyword.get(exchange, :name)},
                   {"Type", exchange |> Keyword.get(:type) |> Atom.to_string()},
                   {"VHost", Keyword.get(exchange, :vhost)}]
+
     Common.stats(Keyword.get(exchange, :message_stats, []), Common.message_stats)
       |> Enum.map(fn(m) -> m ++ [dimensions: dimensions] end)
   end

@@ -1,4 +1,7 @@
 defmodule RabbitMQ.CloudWatchExporter.VHostMetrics do
+  @moduledoc """
+  Collects VHost related metrics.
+  """
 
   require RabbitMQ.CloudWatchExporter.Common
 
@@ -6,6 +9,10 @@ defmodule RabbitMQ.CloudWatchExporter.VHostMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
+  @doc """
+  Collect VHost metrics in AWS CW format.
+  """
+  @spec collect_vhost_metrics() :: List.t
   def collect_vhost_metrics() do
     RabbitVHost.info_all()
       |> RabbitMGMTDB.augment_vhosts(Common.no_range)

@@ -1,10 +1,17 @@
 defmodule RabbitMQ.CloudWatchExporter.ChannelMetrics do
+  @moduledoc """
+  Collects Channel related metrics.
+  """
 
   require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
+  @doc """
+  Collect Channel metrics in AWS CW format.
+  """
+  @spec collect_channel_metrics() :: List.t
   def collect_channel_metrics() do
     RabbitMGMTDB.get_all_channels(Common.no_range)
       |> Enum.flat_map(&channel_metrics/1)

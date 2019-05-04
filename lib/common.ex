@@ -1,4 +1,7 @@
 defmodule RabbitMQ.CloudWatchExporter.Common do
+  @moduledoc """
+  Common functions shared across modules.
+  """
 
   alias :rabbit_vhost, as: RabbitVHost
 
@@ -11,6 +14,10 @@ defmodule RabbitMQ.CloudWatchExporter.Common do
   defmacro message_counts, do: @message_counts
   defmacro no_range, do: quote do: {:no_range, :no_range, :no_range, :no_range}
 
+  @doc """
+  Collect common metrics in AWS CW format.
+  """
+  @spec stats(List.t, Atom.t) :: List.t
   def stats(list, stats_type) do
     for {keyword, value} <- list,
         Enum.member?(stats_type, keyword) do
@@ -24,6 +31,10 @@ defmodule RabbitMQ.CloudWatchExporter.Common do
     end
   end
 
+  @doc """
+  List all available VHost within the cluster.
+  """
+  @spec list_vhosts() :: List.t
   def list_vhosts() do
     RabbitVHost.info_all([:name]) |> Enum.map(fn([name: vhost]) -> vhost end)
   end

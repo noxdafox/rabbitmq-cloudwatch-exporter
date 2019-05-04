@@ -1,10 +1,17 @@
 defmodule RabbitMQ.CloudWatchExporter.OverviewMetrics do
+  @moduledoc """
+  Collects general overview metrics.
+  """
 
   require RabbitMQ.CloudWatchExporter.Common
 
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQ.CloudWatchExporter.Common, as: Common
 
+  @doc """
+  Collect overview metrics in AWS CW format.
+  """
+  @spec collect_overview_metrics() :: List.t
   def collect_overview_metrics() do
     RabbitMGMTDB.get_overview(Common.no_range) |> overview_metrics()
   end
