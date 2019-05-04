@@ -89,4 +89,151 @@ Lastly, the [AWS CloudWatch namespace](https://docs.aws.amazon.com/AmazonCloudWa
 
 ## Metrics
 
-TODO
+Metrics are grouped in different categories. All the metrics grouped within a category are characterised by a set of [dimensions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Dimension) which help to identify their belonging.
+
+As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pricing/) per each metric, the CloudWatch Exporter Plugin exports a limited subset of metrics which are deemed relevant. If a particular metric is missing, please open an [Issue Ticket](https://github.com/noxdafox/rabbitmq-cloudwatch-exporter/issues) or submit a [Pull Request](https://github.com/noxdafox/rabbitmq-cloudwatch-exporter/pulls) to add it to the exported ones. For the same rationale, the CloudWatch Exporter Plugin only exports metrics from the categories which have been enabled in the configuration file.
+
+### Overview
+
+#### Dimensions
+
+| Name        | Description       |
+| ----------- | ----------------- |
+| Metric      | "ClusterOverview" |
+| Cluster     | Cluster name      |
+
+#### Metrics
+
+ TODO message stats and message counts
+
+### VHost
+
+#### Dimensions
+
+| Name        | Description       |
+| ----------- | ----------------- |
+| Metric      | "VHost"           |
+| Cluster     | Cluster name      |
+| VHost       | Virtual Host name |
+
+#### Metrics
+
+ TODO: message stats and message counts
+
+### Node
+
+#### Dimensions
+
+| Name        | Description              |
+| ----------- | ------------------------ |
+| Metric      | "Node"                   |
+| Cluster     | Cluster name             |
+| Node        | Node name                |
+| Type        | Node type (disk\|memory) |
+| Limit       | Limit when applicable    |
+
+#### Metrics
+
+| Name                    | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| Uptime                  | Node uptime in milliseconds                  |
+| Memory                  | Memory in use                                |
+| DiskFree                | Amount of free disk                          |
+| FileDescriptors         | Open file descriptors                        |
+| Sockets                 | Open sockets                                 |
+| Processes               | Erlang Processes                             |
+| IORead                  | I/O read count                               |
+| BytesIORead             | I/O read in bytes                            |
+| IOWrite                 | I/O write count                              |
+| BytesIOWrite            | I/O write in bytes                           |
+| IOSeek                  | I/O seek count                               |
+| MnesiaRamTransactions   | Mnesia transaction count on memory tables    |
+| MnesiaDiskTransactions  | Mnesia transaction count on disk tables      |
+
+### Exchange
+
+#### Dimensions
+
+| Name        | Description                         |
+| ----------- | ----------------------------------- |
+| Metric      | "Exchange"                          |
+| Cluster     | Cluster name                        |
+| Exchange    | Exchange name                       |
+| Type        | Exchange type (direct\|fanout\|...) |
+| VHost       | VHost where the exchange belongs    |
+
+#### Metrics
+
+ TODO  message stats
+
+### Queue
+
+#### Dimensions
+
+| Name        | Description                       |
+| ----------- | --------------------------------- |
+| Metric      | "Queue"                           |
+| Cluster     | Cluster name                      |
+| Queue       | Queue name                        |
+| VHost       | VHost where the queue belongs     |
+
+#### Metrics
+
+| Name                       | Description                                                                      |
+| -------------------------- | -------------------------------------------------------------------------------- |
+| Memory                     | Memory consumed by the queue                                                     |
+| Consumers                  | Consumers reading from the queue                                                 |
+| LengthPriorityLevel{level} | Number of elements in the priority level of the queue (only for priority queues) |
+
+TODO: message stats and message counts
+
+### Connection
+
+#### Dimensions
+
+| Name                    | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| Metric                  | "Connection"                                     |
+| Cluster                 | Cluster name                                     |
+| Connection              | IP:Port -> IP:port                               |
+| Protocol                | Used protocol (AMQP 0-9-1\|AMQP 1.0\|STOMP\|...) |
+| Node                    | Node where the connection is attached to         |
+| VHost                   | VHost where the connection is attached to        |
+| User                    | Username used to connect                         |
+| AuthMechanism           | Employed authentication mechanism                |
+
+#### Metrics
+
+| Name                    | Description                                   |
+| ----------------------- | --------------------------------------------- |
+| Channels                | Opened channels count                         |
+| Sent                    | Packets sent                                  |
+| BytesSent               | Bytes sent                                    |
+| Received                | Packets received                              |
+| BytesReceived           | Bytes received                                |
+
+### Channel
+
+#### Dimensions
+
+| Name                    | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| Metric                  | "Channel"                                        |
+| Cluster                 | Cluster name                                     |
+| Connection              | IP:Port -> IP:port                               |
+| Channel                 | IP:Port -> IP:port (channels on the connection)  |
+| VHost                   | VHost where the connection is attached to        |
+| User                    | Username used to connect                         |
+
+#### Metrics
+
+| Name                       | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| MessagesUnacknowledged     | Messages pending acknowledgement on the channel              |
+| MessagesUnconfirmed        | Messages unconfirmed on the channel                          |
+| MessagesUncommitted        | Messages uncommitted on the channel                          |
+| AknogwledgesUncommitted    | Acknowledgements uncommitted on the channel                  |
+| PrefetchCount              | Prefetch count (QoS) configured on the channel               |
+| GlobalPrefetchCount        | Global prefetch count (QoS) configured on the channel        |
+
+ TODO: message stats
