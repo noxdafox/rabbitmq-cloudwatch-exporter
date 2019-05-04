@@ -1,0 +1,22 @@
+{mapping, "cloudwatch_exporter.namespace", "rabbitmq_cloudwatch_exporter.namespace",
+[{datatype, string}]}.
+
+{mapping, "cloudwatch_exporter.export_period", "rabbitmq_cloudwatch_exporter.export_period",
+[{datatype, integer}]}.
+
+{mapping, "cloudwatch_exporter.metrics.$metric", "rabbitmq_cloudwatch_exporter.metrics",
+[{datatype, atom}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+{mapping, "cloudwatch_exporter.aws.region", "rabbitmq_cloudwatch_exporter.aws.region",
+[{datatype, string}]}.
+
+{mapping, "cloudwatch_exporter.aws.access_key_id", "rabbitmq_cloudwatch_exporter.aws.access_key_id",
+[{datatype, string}]}.
+
+{mapping, "cloudwatch_exporter.aws.secret_access_key", "rabbitmq_cloudwatch_exporter.aws.secret_access_key",
+[{datatype, string}]}.
