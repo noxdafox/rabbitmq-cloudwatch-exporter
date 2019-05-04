@@ -1,9 +1,9 @@
-PROJECT = rabbitmq_metrics_collector
+PROJECT = rabbitmq_cloudwatch_exporter
 
-DEPS = rabbit_common rabbit rabbitmq_management
+DEPS = rabbit_common rabbit rabbitmq_management rabbitmq_management_agent
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
 
-elixir_srcs  := mix.exs
+elixir_srcs := mix.exs
 
 app:: $(elixir_srcs) deps
 	$(MIX) make_all
