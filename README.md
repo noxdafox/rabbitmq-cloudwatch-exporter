@@ -104,7 +104,22 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 #### Metrics
 
- TODO message stats and message counts
+| Name                       | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| Messages                   | Total message count within the cluster                       |
+| MessagesReady              | Messages ready for deliver within the cluster                |
+| MessagesUnacknowledged     | Messages pending for acknowledgement within the cluster      |
+| Ack                        | Messages acknowledged                                        |
+| Confirm                    | Messages confirmed to publishers                             |
+| Deliver                    | Messages delivered to consumers                              |
+| DeliverGet                 | Messages delivered to consumers via basic.get                |
+| DeliverNoAck               | Messages delivered to consumers without acknowledgment       |
+| Get                        | Amount of basic.get requests                                 |
+| GetEmpty                   | Amount of basic.get requests over empty queue                |
+| GetNoAck                   | Amount of basic.get requests without acknowledgement         |
+| Publish                    | Messages published within the channel                        |
+| Redeliver                  | Messages redelivered                                         |
+| ReturnUnroutable           | Messages returned as non routable                            |
 
 ### VHost
 
@@ -118,7 +133,22 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 #### Metrics
 
- TODO: message stats and message counts
+| Name                       | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| Messages                   | Total message count within the vhost                         |
+| MessagesReady              | Messages ready for deliver within the vhost                  |
+| MessagesUnacknowledged     | Messages pending for acknowledgement within the vhost        |
+| Ack                        | Messages acknowledged                                        |
+| Confirm                    | Messages confirmed to publishers                             |
+| Deliver                    | Messages delivered to consumers                              |
+| DeliverGet                 | Messages delivered to consumers via basic.get                |
+| DeliverNoAck               | Messages delivered to consumers without acknowledgment       |
+| Get                        | Amount of basic.get requests                                 |
+| GetEmpty                   | Amount of basic.get requests over empty queue                |
+| GetNoAck                   | Amount of basic.get requests without acknowledgement         |
+| Publish                    | Messages published within the channel                        |
+| Redeliver                  | Messages redelivered                                         |
+| ReturnUnroutable           | Messages returned as non routable                            |
 
 ### Node
 
@@ -164,7 +194,10 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 #### Metrics
 
- TODO  message stats
+| Name                    | Description                                  |
+| ----------------------- | -------------------------------------------- |
+| PublishIn               | Messages published within the exchange       |
+| PublishOut              | Messages published by the exchange           |
 
 ### Queue
 
@@ -183,9 +216,19 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | -------------------------- | -------------------------------------------------------------------------------- |
 | Memory                     | Memory consumed by the queue                                                     |
 | Consumers                  | Consumers reading from the queue                                                 |
+| Messages                   | Total message count within the queue                                             |
+| MessagesReady              | Messages ready for deliver within the queue                                      |
+| MessagesUnacknowledged     | Messages pending for acknowledgement within the queue                            |
 | LengthPriorityLevel{level} | Number of elements in the priority level of the queue (only for priority queues) |
-
-TODO: message stats and message counts
+| Ack                        | Messages acknowledged                                                            |
+| Deliver                    | Messages delivered to consumers                                                  |
+| DeliverGet                 | Messages delivered to consumers via basic.get                                    |
+| DeliverNoAck               | Messages delivered to consumers without acknowledgment                           |
+| Get                        | Amount of basic.get requests                                                     |
+| GetEmpty                   | Amount of basic.get requests over empty queue                                    |
+| GetNoAck                   | Amount of basic.get requests without acknowledgement                             |
+| Publish                    | Messages published within the queue                                              |
+| Redeliver                  | Messages redelivered                                                             |
 
 ### Connection
 
@@ -235,5 +278,14 @@ TODO: message stats and message counts
 | AknogwledgesUncommitted    | Acknowledgements uncommitted on the channel                  |
 | PrefetchCount              | Prefetch count (QoS) configured on the channel               |
 | GlobalPrefetchCount        | Global prefetch count (QoS) configured on the channel        |
-
- TODO: message stats
+| Ack                        | Messages acknowledged                                        |
+| Confirm                    | Messages confirmed to publishers                             |
+| Deliver                    | Messages delivered to consumers                              |
+| DeliverGet                 | Messages delivered to consumers via basic.get                |
+| DeliverNoAck               | Messages delivered to consumers without acknowledgment       |
+| Get                        | Amount of basic.get requests                                 |
+| GetEmpty                   | Amount of basic.get requests over empty queue                |
+| GetNoAck                   | Amount of basic.get requests without acknowledgement         |
+| Publish                    | Messages published within the channel                        |
+| Redeliver                  | Messages redelivered                                         |
+| ReturnUnroutable           | Messages returned as non routable                            |
