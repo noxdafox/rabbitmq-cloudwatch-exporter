@@ -15,7 +15,7 @@ defmodule RabbitMQ.CloudWatchExporter.Mixfile do
 
   def application do
     [
-      applications: [:logger, :rabbit, :mnesia],
+      extra_applications: [:rabbit, :mnesia],
       mod: {RabbitMQ.CloudWatchExporter.Application, []}
     ]
   end
