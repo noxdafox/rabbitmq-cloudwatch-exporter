@@ -9,7 +9,7 @@ Download the `.ez` files from the latest [release](https://github.com/noxdafox/r
 Enable the plugin:
 
 ```bash
-    [sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
+[sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
 ```
 
 ## Building from Source
@@ -19,15 +19,15 @@ Please see RabbitMQ Plugin Development guide.
 To build the plugin:
 
 ```bash
-    git clone https://github.com/noxdafox/rabbitmq-cloudwatch-exporter.git
-    cd rabbitmq-cloudwatch-exporter
-    make dist
+git clone https://github.com/noxdafox/rabbitmq-cloudwatch-exporter.git
+cd rabbitmq-cloudwatch-exporter
+make dist
 ```
 
 Then copy all the *.ez files inside the plugins folder to the [RabbitMQ plugins directory](http://www.rabbitmq.com/relocate.html) and enable the plugin:
 
 ```bash
-    [sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
+[sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
 ```
 
 ## Configuration
@@ -39,15 +39,16 @@ To resolve AWS credentials, the standard environment variables `AWS_ACCESS_KEY_I
 Alternatively, the User can specify them in the `rabbitmq.conf` file as follows.
 
 ```shell
-    cloudwatch_exporter.aws.access_key_id = "AKIAIOSFODNN7EXAMPLE"
-    cloudwatch_exporter.aws.secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+cloudwatch_exporter.aws.access_key_id = "AKIAIOSFODNN7EXAMPLE"
+cloudwatch_exporter.aws.secret_access_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 ```
 
 Or in the `rabbitmq.config` format.
 
 ```erlang
-    [{ex_aws, [{access_key_id, "AKIAIOSFODNN7EXAMPLE"},
-               {secret_access_key, "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"}]}].
+[{rabbitmq_cloudwatch_exporter,
+  [{aws, [{access_key_id, "AKIAIOSFODNN7EXAMPLE"},
+          {secret_access_key, "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"}]}]}].
 ```
 
 ### AWS Region
@@ -55,13 +56,14 @@ Or in the `rabbitmq.config` format.
 By default the metrics are published within the `us-east-1` AWS region. The region can be changed in the `rabbitmq.conf` file as follows.
 
 ```shell
-    cloudwatch_exporter.aws.region = "us-west-1"
+cloudwatch_exporter.aws.region = "us-west-1"
 ```
 
 Or in the `rabbitmq.config` format.
 
 ```erlang
-    [{ex_aws, [{region, "us-west-1"}]}].
+[{rabbitmq_cloudwatch_exporter,
+  [{aws, [{region, "us-west-1"}]}]}].
 ```
 
 ### Metrics collection
@@ -71,16 +73,16 @@ Metrics are grouped in different categories described below. Each category must 
 `rabbitmq.conf` example.
 
 ```shell
-    cloudwatch_exporter.metrics.1 = overview
-    cloudwatch_exporter.metrics.2 = vhost
-    cloudwatch_exporter.metrics.3 = node
+cloudwatch_exporter.metrics.1 = overview
+cloudwatch_exporter.metrics.2 = vhost
+cloudwatch_exporter.metrics.3 = node
 ```
 
 `rabbitmq.config` example.
 
 ```erlang
-    [{rabbitmq_cloudwatch_exporter, [
-      {metrics, [overview, vhost, node, exchange, queue, connection, channel]}]}].
+[{rabbitmq_cloudwatch_exporter,
+  [{metrics, [overview, vhost, node, exchange, queue, connection, channel]}]}].
 ```
 
 Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format).
