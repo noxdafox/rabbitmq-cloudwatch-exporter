@@ -1,4 +1,4 @@
-defmodule RabbitMQ.CloudWatchExporter.Mixfile do
+defmodule RabbitMQCloudWatchExporter.Mixfile do
   use Mix.Project
 
   def project do
@@ -16,7 +16,7 @@ defmodule RabbitMQ.CloudWatchExporter.Mixfile do
   def application do
     [
       extra_applications: [:rabbit, :mnesia],
-      mod: {RabbitMQ.CloudWatchExporter.Application, []}
+      mod: {RabbitMQCloudWatchExporter, []}
     ]
   end
 

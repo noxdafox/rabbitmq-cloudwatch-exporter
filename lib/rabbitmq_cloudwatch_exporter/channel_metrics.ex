@@ -5,15 +5,15 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.ChannelMetrics do
+defmodule RabbitMQCloudWatchExporter.ChannelMetrics do
   @moduledoc """
   Collects Channel related metrics.
   """
 
-  require RabbitMQ.CloudWatchExporter.Common
+  require RabbitMQCloudWatchExporter.Common
 
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
-  alias RabbitMQ.CloudWatchExporter.Common, as: Common
+  alias RabbitMQCloudWatchExporter.Common, as: Common
 
   @doc """
   Collect Channel metrics in AWS CW format.

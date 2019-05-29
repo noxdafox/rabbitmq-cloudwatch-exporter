@@ -5,17 +5,17 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.ExchangeMetrics do
+defmodule RabbitMQCloudWatchExporter.ExchangeMetrics do
   @moduledoc """
   Collects Exchange related metrics.
   """
 
-  require RabbitMQ.CloudWatchExporter.Common
+  require RabbitMQCloudWatchExporter.Common
 
   alias :rabbit_exchange, as: RabbitExchange
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
-  alias RabbitMQ.CloudWatchExporter.Common, as: Common
+  alias RabbitMQCloudWatchExporter.Common, as: Common
 
   @doc """
   Collect Exchange metrics in AWS CW format.

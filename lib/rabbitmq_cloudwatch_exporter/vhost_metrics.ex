@@ -5,16 +5,16 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.VHostMetrics do
+defmodule RabbitMQCloudWatchExporter.VHostMetrics do
   @moduledoc """
   Collects VHost related metrics.
   """
 
-  require RabbitMQ.CloudWatchExporter.Common
+  require RabbitMQCloudWatchExporter.Common
 
   alias :rabbit_vhost, as: RabbitVHost
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
-  alias RabbitMQ.CloudWatchExporter.Common, as: Common
+  alias RabbitMQCloudWatchExporter.Common, as: Common
 
   @doc """
   Collect VHost metrics in AWS CW format.

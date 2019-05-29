@@ -5,7 +5,7 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.Exporter do
+defmodule RabbitMQCloudWatchExporter.Exporter do
   @moduledoc """
   Periodically collects and exports all selected metrics to AWS CloudWatch.
   """

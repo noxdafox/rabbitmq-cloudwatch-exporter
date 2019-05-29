@@ -5,7 +5,7 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.Common do
+defmodule RabbitMQCloudWatchExporter.Common do
   @moduledoc """
   Common functions shared across modules.
   """

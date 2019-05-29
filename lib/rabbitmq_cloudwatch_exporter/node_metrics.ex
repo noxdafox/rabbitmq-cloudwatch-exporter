@@ -5,16 +5,16 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.NodeMetrics do
+defmodule RabbitMQCloudWatchExporter.NodeMetrics do
   @moduledoc """
   Collects Node related metrics.
   """
 
-  require RabbitMQ.CloudWatchExporter.Common
+  require RabbitMQCloudWatchExporter.Common
 
   alias :rabbit_mnesia, as: RabbitMnesia
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
-  alias RabbitMQ.CloudWatchExporter.Common, as: Common
+  alias RabbitMQCloudWatchExporter.Common, as: Common
 
   @doc """
   Collect Node metrics in AWS CW format.

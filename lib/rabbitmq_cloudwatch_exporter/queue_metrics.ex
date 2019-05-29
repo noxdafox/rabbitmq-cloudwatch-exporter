@@ -5,17 +5,17 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.QueueMetrics do
+defmodule RabbitMQCloudWatchExporter.QueueMetrics do
   @moduledoc """
   Collects Queue related metrics.
   """
 
-  require RabbitMQ.CloudWatchExporter.Common
+  require RabbitMQCloudWatchExporter.Common
 
   alias :rabbit_amqqueue, as: RabbitQueue
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
-  alias RabbitMQ.CloudWatchExporter.Common, as: Common
+  alias RabbitMQCloudWatchExporter.Common, as: Common
 
   @doc """
   Collect Queue metrics in AWS CW format.

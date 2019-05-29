@@ -5,11 +5,11 @@
 # Copyright (c) 2019, Matteo Cafasso.
 # All rights reserved.
 
-defmodule RabbitMQ.CloudWatchExporter.Application do
+defmodule RabbitMQCloudWatchExporter do
   use Application
 
   def start(_type, _args) do
-    children = [RabbitMQ.CloudWatchExporter.Exporter]
+    children = [RabbitMQCloudWatchExporter.Exporter]
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
