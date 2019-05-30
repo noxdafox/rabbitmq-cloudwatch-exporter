@@ -14,13 +14,13 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
 
   alias :timer, as: Timer
   alias :rabbit_nodes, as: RabbitNodes
-  alias RabbitMQ.CloudWatchExporter.OverviewMetrics, as: OverviewMetrics
-  alias RabbitMQ.CloudWatchExporter.VHostMetrics, as: VHostMetrics
-  alias RabbitMQ.CloudWatchExporter.ExchangeMetrics, as: ExchangeMetrics
-  alias RabbitMQ.CloudWatchExporter.QueueMetrics, as: QueueMetrics
-  alias RabbitMQ.CloudWatchExporter.NodeMetrics, as: NodeMetrics
-  alias RabbitMQ.CloudWatchExporter.ConnectionMetrics, as: ConnectionMetrics
-  alias RabbitMQ.CloudWatchExporter.ChannelMetrics, as: ChannelMetrics
+  alias RabbitMQCloudWatchExporter.OverviewMetrics, as: OverviewMetrics
+  alias RabbitMQCloudWatchExporter.VHostMetrics, as: VHostMetrics
+  alias RabbitMQCloudWatchExporter.ExchangeMetrics, as: ExchangeMetrics
+  alias RabbitMQCloudWatchExporter.QueueMetrics, as: QueueMetrics
+  alias RabbitMQCloudWatchExporter.NodeMetrics, as: NodeMetrics
+  alias RabbitMQCloudWatchExporter.ConnectionMetrics, as: ConnectionMetrics
+  alias RabbitMQCloudWatchExporter.ChannelMetrics, as: ChannelMetrics
 
   @request_chunk_size 20
   @default_export_period 60
