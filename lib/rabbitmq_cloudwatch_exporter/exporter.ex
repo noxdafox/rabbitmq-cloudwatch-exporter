@@ -10,7 +10,7 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
   Periodically collects and exports all selected metrics to AWS CloudWatch.
   """
 
-  use Task, restart: :transient
+  use GenServer
 
   alias :timer, as: Timer
   alias :rabbit_nodes, as: RabbitNodes
@@ -34,7 +34,7 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
                 :connection => &ConnectionMetrics.collect_connection_metrics/0,
                 :channel => &ChannelMetrics.collect_channel_metrics/0}
 
-  def start_link(_) do
+  def init(_) do
     options = [period: Application.get_env(@appname, :export_period, @default_export_period),
                collectors: Application.get_env(@appname, :metrics, []),
                namespace: Application.get_env(@appname, :namespace, @default_namespace)
@@ -44,23 +44,23 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
       |> Keyword.take([:region, :access_key_id, :secret_access_key])
       |> Enum.map(fn({option, value}) -> {option, value |> to_string() |> String.trim("\"")} end)
 
-    Task.start_link(__MODULE__, :run, [options, request_options])
+    Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
+
+    {:ok, [options, request_options]}
   end
 
-  def run(options, request_options) do
+  def handle_info(:export_metrics, [options, request_options]) do
     cluster = RabbitNodes.cluster_name()
 
-    receive do
-    after
-      Timer.seconds(options[:period]) ->
-        Enum.flat_map(options[:collectors], fn c -> @collectors[c].() end)
-          |> Enum.map(fn m ->
-                        Keyword.update(m, :dimensions, [], &(([{"Cluster", cluster} | &1])))
-                      end)
-          |> export_metrics(options[:namespace], request_options)
+    Enum.flat_map(options[:collectors], fn c -> @collectors[c].() end)
+      |> Enum.map(fn m ->
+                    Keyword.update(m, :dimensions, [], &(([{"Cluster", cluster} | &1])))
+                  end)
+      |> export_metrics(options[:namespace], request_options)
 
-        run(options, request_options)
-    end
+    Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
+
+    {:noreply, [options, request_options]}
   end
 
   # Export the collected metrics splitting the requests in chunks according to AWS CW limits
