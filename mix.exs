@@ -15,7 +15,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
 
   def application do
     [
-      extra_applications: [:rabbit, :mnesia],
+      extra_applications: [:rabbit, :mnesia, :singleton],
       mod: {RabbitMQCloudWatchExporter, []}
     ]
   end
@@ -24,6 +24,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
     [
       {:ex_aws, "~> 2.0"},
       {:ex_aws_cloudwatch, "~> 2.0.4"},
+      {:singleton, "~> 1.2.0"},
       {:poison, "~> 3.0"},
       {:hackney, "~> 1.9"},
       {
