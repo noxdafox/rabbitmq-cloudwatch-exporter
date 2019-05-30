@@ -53,6 +53,7 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
     cluster = RabbitNodes.cluster_name()
 
     Enum.flat_map(options[:collectors], fn c -> @collectors[c].() end)
+      |> Enum.filter(fn(m) -> m[:value] != nil end)
       |> Enum.map(fn m ->
                     Keyword.update(m, :dimensions, [], &(([{"Cluster", cluster} | &1])))
                   end)
