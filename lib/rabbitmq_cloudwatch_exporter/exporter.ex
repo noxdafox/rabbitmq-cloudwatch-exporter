@@ -64,6 +64,8 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
     {:noreply, [options, request_options]}
   end
 
+  def handle_info({:ssl_closed, _msg}, state), do: {:noreply, state}
+
   # Export the collected metrics splitting the requests in chunks according to AWS CW limits
   defp export_metrics(metrics, namespace, options) do
     Enum.map(Enum.chunk_every(metrics, @request_chunk_size),
