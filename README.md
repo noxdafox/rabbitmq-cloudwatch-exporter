@@ -85,6 +85,25 @@ cloudwatch_exporter.metrics.3 = node
   [{metrics, [overview, vhost, node, exchange, queue, connection, channel]}]}].
 ```
 
+For `exchange`, `queue`, `connection` and `channel` groups, it is possible to control the names of the entities to be published via regular expressions.
+
+`rabbitmq.conf` example.
+
+```shell
+# Only export exchanges which names begin with foo or end with bar
+cloudwatch_exporter.export_regex.exchange = "foo.*|.*bar"
+# Exclude server-named queues
+cloudwatch_exporter.export_regex.queue = "^(?!amq.gen-.*).*$"
+```
+
+`rabbitmq.config` example.
+
+```erlang
+[{rabbitmq_cloudwatch_exporter,
+  [{export_regex, [{exchange, "foo.*|.*bar"},
+                   {queue, "^(?!amq.gen-.*).*$"}]}]}].
+```
+
 Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format).
 
 Lastly, the [AWS CloudWatch namespace](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Namespace) can be controlled via the `cloudwatch_exporter.namespace` configuration parameter (`rabbitmq_cloudwatch_exporter.namespace` in `rabbitmq.config` format). The default value is `RabbitMQ`.
