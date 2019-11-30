@@ -16,11 +16,13 @@ defmodule RabbitMQCloudWatchExporter.NodeMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
+  @type regex :: {Atom.t, Regex.t}
+
   @doc """
   Collect Node metrics in AWS CW format.
   """
-  @spec collect_node_metrics() :: List.t
-  def collect_node_metrics() do
+  @spec collect_node_metrics([regex]) :: List.t
+  def collect_node_metrics(_regex_patterns) do
     list_nodes()
       |> RabbitMGMTDB.augment_nodes(Common.no_range)
       |> Enum.flat_map(&node_metrics/1)

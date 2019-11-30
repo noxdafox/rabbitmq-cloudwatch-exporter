@@ -16,11 +16,13 @@ defmodule RabbitMQCloudWatchExporter.VHostMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
+  @type regex :: {Atom.t, Regex.t}
+
   @doc """
   Collect VHost metrics in AWS CW format.
   """
-  @spec collect_vhost_metrics() :: List.t
-  def collect_vhost_metrics() do
+  @spec collect_vhost_metrics([regex]) :: List.t
+  def collect_vhost_metrics(_regex_patterns) do
     RabbitVHost.info_all()
       |> RabbitMGMTDB.augment_vhosts(Common.no_range)
       |> Enum.flat_map(&vhost_metrics/1)

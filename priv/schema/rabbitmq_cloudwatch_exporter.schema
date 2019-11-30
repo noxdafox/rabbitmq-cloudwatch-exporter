@@ -12,6 +12,18 @@ fun(Conf) ->
     lists:reverse([V || {_, V} <- Settings])
 end}.
 
+{mapping, "cloudwatch_exporter.export_regex.exchange", "rabbitmq_cloudwatch_exporter.export_regex.exchange",
+[{datatype, string}]}.
+
+{mapping, "cloudwatch_exporter.export_regex.queue", "rabbitmq_cloudwatch_exporter.export_regex.queue",
+[{datatype, string}]}.
+
+{mapping, "cloudwatch_exporter.export_regex.connection", "rabbitmq_cloudwatch_exporter.export_regex.connection",
+[{datatype, string}]}.
+
+{mapping, "cloudwatch_exporter.export_regex.channel", "rabbitmq_cloudwatch_exporter.export_regex.channel",
+[{datatype, string}]}.
+
 {mapping, "cloudwatch_exporter.aws.region", "rabbitmq_cloudwatch_exporter.aws.region",
 [{datatype, string}]}.
 

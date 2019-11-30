@@ -15,11 +15,13 @@ defmodule RabbitMQCloudWatchExporter.OverviewMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
+  @type regex :: {Atom.t, Regex.t}
+
   @doc """
   Collect overview metrics in AWS CW format.
   """
-  @spec collect_overview_metrics() :: List.t
-  def collect_overview_metrics() do
+  @spec collect_overview_metrics([regex]) :: List.t
+  def collect_overview_metrics(_regex_patterns) do
     RabbitMGMTDB.get_overview(Common.no_range) |> overview_metrics()
   end
 

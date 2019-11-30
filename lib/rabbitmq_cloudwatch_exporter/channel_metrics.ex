@@ -15,12 +15,17 @@ defmodule RabbitMQCloudWatchExporter.ChannelMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
+  @type regex :: {:channel, Regex.t}
+
   @doc """
   Collect Channel metrics in AWS CW format.
   """
-  @spec collect_channel_metrics() :: List.t
-  def collect_channel_metrics() do
+  @spec collect_channel_metrics([regex]) :: List.t
+  def collect_channel_metrics(regex_patterns) do
+    regex = Keyword.get(regex_patterns, :channel, ~r/.*/)
+
     RabbitMGMTDB.get_all_channels(Common.no_range)
+      |> Enum.filter(fn(c) -> String.match?(Keyword.get(c, :name, ""), regex) end)
       |> Enum.flat_map(&channel_metrics/1)
   end
 

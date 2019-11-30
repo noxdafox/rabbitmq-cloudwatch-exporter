@@ -17,15 +17,20 @@ defmodule RabbitMQCloudWatchExporter.QueueMetrics do
   alias :rabbit_mgmt_format, as: RabbitMGMTFormat
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
+  @type regex :: {:queue, Regex.t}
+
   @doc """
   Collect Queue metrics in AWS CW format.
   """
-  @spec collect_queue_metrics() :: List.t
-  def collect_queue_metrics() do
+  @spec collect_queue_metrics([regex]) :: List.t
+  def collect_queue_metrics(regex_patterns) do
+    regex = Keyword.get(regex_patterns, :queue, ~r/.*/)
+
     Common.list_vhosts()
       |> Enum.flat_map(&RabbitQueue.list/1)
       |> Enum.map(&RabbitMGMTFormat.queue/1)
       |> RabbitMGMTDB.augment_queues(Common.no_range, :basic)
+      |> Enum.filter(fn(q) -> String.match?(Keyword.get(q, :name, ""), regex) end)
       |> Enum.flat_map(&queue_metrics/1)
   end
 

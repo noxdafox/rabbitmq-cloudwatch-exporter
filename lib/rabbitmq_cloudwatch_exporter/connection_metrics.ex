@@ -15,12 +15,17 @@ defmodule RabbitMQCloudWatchExporter.ConnectionMetrics do
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
+  @type regex :: {:connection, Regex.t}
+
   @doc """
   Collect Connection metrics in AWS CW format.
   """
-  @spec collect_connection_metrics() :: List.t
-  def collect_connection_metrics() do
+  @spec collect_connection_metrics([regex]) :: List.t
+  def collect_connection_metrics(regex_patterns) do
+    regex = Keyword.get(regex_patterns, :connection, ~r/.*/)
+
     RabbitMGMTDB.get_all_connections(Common.no_range)
+      |> Enum.filter(fn(c) -> String.match?(Keyword.get(c, :name, ""), regex) end)
       |> Enum.flat_map(&connection_metrics/1)
   end
 
