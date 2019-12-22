@@ -35,8 +35,9 @@ defmodule RabbitMQCloudWatchExporter.ExchangeMetrics do
   end
 
   defp exchange_metrics(exchange) do
+    name = case Keyword.get(exchange, :name) do "" -> "_"; name -> name end
     dimensions = [{"Metric", "Exchange"},
-                  {"Exchange", Keyword.get(exchange, :name)},
+                  {"Exchange", name},
                   {"Type", exchange |> Keyword.get(:type) |> Atom.to_string()},
                   {"VHost", Keyword.get(exchange, :vhost)}]
 
