@@ -102,7 +102,15 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
   defp export_metrics(metrics, namespace, options) do
     Enum.map(Enum.chunk_every(metrics, @request_chunk_size),
       fn(chunk) ->
-        ExAws.Cloudwatch.put_metric_data(chunk, namespace) |> ExAws.request!(options)
+        data = ExAws.Cloudwatch.put_metric_data(chunk, namespace)
+
+        case ExAws.request(data, options) do
+          {:ok, _} -> :ok
+          {:error, error} ->
+            RabbitLog.error(
+              "Unable to publish metrics to CloudWatch: ~p~n"
+              <> "Error: ~p", [chunk, error])
+        end
       end)
   end
 end
