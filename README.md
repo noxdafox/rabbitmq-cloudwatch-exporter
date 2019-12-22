@@ -205,13 +205,13 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 #### Dimensions
 
-| Name        | Description                         |
-| ----------- | ----------------------------------- |
-| Metric      | "Exchange"                          |
-| Cluster     | Cluster name                        |
-| Exchange    | Exchange name                       |
-| Type        | Exchange type (direct\|fanout\|...) |
-| VHost       | VHost where the exchange belongs    |
+| Name        | Description                                  |
+| ----------- | -------------------------------------------- |
+| Metric      | "Exchange"                                   |
+| Cluster     | Cluster name                                 |
+| Exchange    | Exchange name, `_` for the default exchange  |
+| Type        | Exchange type (direct\|fanout\|...)          |
+| VHost       | VHost where the exchange belongs             |
 
 #### Metrics
 
