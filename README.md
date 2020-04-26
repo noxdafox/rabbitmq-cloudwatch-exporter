@@ -73,35 +73,61 @@ Metrics are grouped in different categories described below. Each category must 
 `rabbitmq.conf` example.
 
 ```shell
-cloudwatch_exporter.metrics.1 = overview
-cloudwatch_exporter.metrics.2 = vhost
-cloudwatch_exporter.metrics.3 = node
+cloudwatch_exporter.metrics.overview.enable = true
+cloudwatch_exporter.metrics.vhost.enable = true
+# Omitting or setting a group to false is equivalent
+cloudwatch_exporter.metrics.node.enable = false
 ```
 
 `rabbitmq.config` example.
 
 ```erlang
 [{rabbitmq_cloudwatch_exporter,
-  [{metrics, [overview, vhost, node, exchange, queue, connection, channel]}]}].
+  [{metrics, [{overview, [{enable, true}]},
+              {vhost, [{enable, true}]},
+              {node, [{enable, false}]}]}]}].
 ```
 
-For `exchange`, `queue`, `connection` and `channel` groups, it is possible to control the names of the entities to be published via regular expressions.
+If a metrics group is enabled, all its metrics will be exported. The `export_metrics` configuration parameter allows to further limit which metrics of a specific group to export.
 
 `rabbitmq.conf` example.
 
 ```shell
-# Only export exchanges which names begin with foo or end with bar
-cloudwatch_exporter.export_regex.exchange = "foo.*|.*bar"
-# Exclude server-named queues
-cloudwatch_exporter.export_regex.queue = "^(?!amq.gen-.*).*$"
+cloudwatch_exporter.metrics.exchange.enable = true
+cloudwatch_exporter.metrics.exchange.export_metrics.1 = "PublishIn"
+cloudwatch_exporter.metrics.exchange.export_metrics.2 = "PublishOut"
 ```
 
 `rabbitmq.config` example.
 
 ```erlang
 [{rabbitmq_cloudwatch_exporter,
-  [{export_regex, [{exchange, "foo.*|.*bar"},
-                   {queue, "^(?!amq.gen-.*).*$"}]}]}].
+  [{metrics, [{exchange, [{enable, true},
+                          {export_metrics, ["PublishIn", "PublishOut"]}]}]}]}].
+```
+
+For `exchange`, `queue`, `connection` and `channel` metrics groups, it is possible to control the names of the entities to be published via regular expressions.
+
+`rabbitmq.conf` example.
+
+```shell
+cloudwatch_exporter.metrics.exchange.enable = true
+# Only export exchanges which names begin with foo or end with bar
+cloudwatch_exporter.metrics.exchange.export_regex = "foo.*|.*bar"
+
+cloudwatch_exporter.metrics.queue.enable = true
+# Exclude server-named queues
+cloudwatch_exporter.metrics.queue.export_regex = "^(?!amq.gen-.*).*$"
+```
+
+`rabbitmq.config` example.
+
+```erlang
+[{rabbitmq_cloudwatch_exporter,
+  [{metrics, [{exchange, [{enable, true},
+                          {export_regex, "foo.*|.*bar"}]},
+              {queue, [{enable, true},
+                       {export_regex, "^(?!amq.gen-.*).*$"}]}]}]}].
 ```
 
 Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format).
