@@ -22,9 +22,10 @@ defmodule RabbitMQCloudWatchExporter.QueueMetrics do
   @doc """
   Collect Queue metrics in AWS CW format.
   """
-  @spec collect_queue_metrics([regex]) :: List.t
-  def collect_queue_metrics(regex_patterns) do
-    regex = Keyword.get(regex_patterns, :queue, ~r/.*/)
+  @spec collect_queue_metrics(Keyword.t) :: List.t
+  def collect_queue_metrics(options) do
+    regex = Keyword.get(options, :export_regex, ~r/.*/)
+    filter = Keyword.get(options, :export_metrics, [])
 
     Common.list_vhosts()
       |> Enum.flat_map(&RabbitQueue.list/1)
@@ -32,6 +33,7 @@ defmodule RabbitMQCloudWatchExporter.QueueMetrics do
       |> RabbitMGMTDB.augment_queues(Common.no_range, :basic)
       |> Enum.filter(fn(q) -> String.match?(Keyword.get(q, :name, ""), regex) end)
       |> Enum.flat_map(&queue_metrics/1)
+      |> Common.filter_metrics(filter)
   end
 
   defp queue_metrics(queue) do

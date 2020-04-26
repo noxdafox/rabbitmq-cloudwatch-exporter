@@ -20,9 +20,13 @@ defmodule RabbitMQCloudWatchExporter.OverviewMetrics do
   @doc """
   Collect overview metrics in AWS CW format.
   """
-  @spec collect_overview_metrics([regex]) :: List.t
-  def collect_overview_metrics(_regex_patterns) do
-    RabbitMGMTDB.get_overview(Common.no_range) |> overview_metrics()
+  @spec collect_overview_metrics(Keyword.t) :: List.t
+  def collect_overview_metrics(options) do
+    filter = Keyword.get(options, :export_metrics, [])
+
+    RabbitMGMTDB.get_overview(Common.no_range)
+      |> overview_metrics()
+      |> Common.filter_metrics(filter)
   end
 
   defp overview_metrics(overview) do

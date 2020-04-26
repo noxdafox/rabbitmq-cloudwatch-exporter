@@ -22,9 +22,10 @@ defmodule RabbitMQCloudWatchExporter.ExchangeMetrics do
   @doc """
   Collect Exchange metrics in AWS CW format.
   """
-  @spec collect_exchange_metrics([regex]) :: List.t
-  def collect_exchange_metrics(regex_patterns) do
-    regex = Keyword.get(regex_patterns, :exchange, ~r/.*/)
+  @spec collect_exchange_metrics(Keyword.t) :: List.t
+  def collect_exchange_metrics(options) do
+    regex = Keyword.get(options, :export_regex, ~r/.*/)
+    filter = Keyword.get(options, :export_metrics, [])
 
     Common.list_vhosts()
       |> Enum.flat_map(&RabbitExchange.info_all/1)
@@ -32,6 +33,7 @@ defmodule RabbitMQCloudWatchExporter.ExchangeMetrics do
       |> RabbitMGMTDB.augment_exchanges(Common.no_range, :basic)
       |> Enum.filter(fn(e) -> String.match?(Keyword.get(e, :name, ""), regex) end)
       |> Enum.flat_map(&exchange_metrics/1)
+      |> Common.filter_metrics(filter)
   end
 
   defp exchange_metrics(exchange) do

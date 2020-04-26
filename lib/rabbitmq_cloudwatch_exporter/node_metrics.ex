@@ -21,11 +21,14 @@ defmodule RabbitMQCloudWatchExporter.NodeMetrics do
   @doc """
   Collect Node metrics in AWS CW format.
   """
-  @spec collect_node_metrics([regex]) :: List.t
-  def collect_node_metrics(_regex_patterns) do
+  @spec collect_node_metrics(Keyword.t) :: List.t
+  def collect_node_metrics(options) do
+    filter = Keyword.get(options, :export_metrics, [])
+
     list_nodes()
       |> RabbitMGMTDB.augment_nodes(Common.no_range)
       |> Enum.flat_map(&node_metrics/1)
+      |> Common.filter_metrics(filter)
   end
 
   defp node_metrics(node) do

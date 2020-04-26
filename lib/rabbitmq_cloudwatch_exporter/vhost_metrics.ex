@@ -21,11 +21,14 @@ defmodule RabbitMQCloudWatchExporter.VHostMetrics do
   @doc """
   Collect VHost metrics in AWS CW format.
   """
-  @spec collect_vhost_metrics([regex]) :: List.t
-  def collect_vhost_metrics(_regex_patterns) do
+  @spec collect_vhost_metrics(Keyword.t) :: List.t
+  def collect_vhost_metrics(options) do
+    filter = Keyword.get(options, :export_metrics, [])
+
     RabbitVHost.info_all()
       |> RabbitMGMTDB.augment_vhosts(Common.no_range)
       |> Enum.flat_map(&vhost_metrics/1)
+      |> Common.filter_metrics(filter)
   end
 
   defp vhost_metrics(vhost) do
