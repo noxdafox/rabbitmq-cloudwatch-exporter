@@ -7,6 +7,9 @@
 {mapping, "cloudwatch_exporter.export_period", "rabbitmq_cloudwatch_exporter.export_period",
 [{datatype, integer}]}.
 
+{mapping, "cloudwatch_exporter.storage_resolution", "rabbitmq_cloudwatch_exporter.storage_resolution",
+[{datatype, integer}]}.
+
 %% AWS Options
 %% ===========
 

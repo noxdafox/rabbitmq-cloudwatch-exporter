@@ -153,7 +153,7 @@ cloudwatch_exporter.metrics.queue.export_regex = "^(?!amq.gen-.*).*$"
                        {export_regex, "^(?!amq.gen-.*).*$"}]}]}]}].
 ```
 
-Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format).
+Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format). CloudWatch metrics have a [standard resolution](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics) of one minute. Therefore, publishing more than once per minute will results in the metrics being aggregated on the receiving end. The `cloudwatch_exporter.storage_resolution` configuration parameter (`rabbitmq_cloudwatch_exporter.storage_resolution` in `rabbitmq.config` format) allows to decrease the aggregation period to 1, 5, 10 or 30 seconds.
 
 Lastly, the [AWS CloudWatch namespace](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Namespace) can be controlled via the `cloudwatch_exporter.namespace` configuration parameter (`rabbitmq_cloudwatch_exporter.namespace` in `rabbitmq.config` format). The default value is `RabbitMQ`.
 

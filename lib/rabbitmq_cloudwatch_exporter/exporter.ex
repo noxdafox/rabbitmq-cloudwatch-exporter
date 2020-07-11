@@ -25,6 +25,7 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
 
   @request_chunk_size 20
   @default_export_period 60
+  @default_resolution 60
   @default_namespace "RabbitMQ"
   @appname :rabbitmq_cloudwatch_exporter
   @collectors %{:overview => &OverviewMetrics.collect_overview_metrics/1,
@@ -50,14 +51,10 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
   end
 
   def handle_info(:export_metrics, options) do
-    cluster = RabbitNodes.cluster_name()
-
     options[:collectors]
       |> Enum.flat_map(fn({c, o}) -> @collectors[c].(o) end)
       |> Enum.filter(fn(m) -> m[:value] != nil end)
-      |> Enum.map(fn(m) ->
-                    Keyword.update(m, :dimensions, [], &(([{"Cluster", cluster} | &1])))
-                  end)
+      |> Enum.map(fn(m) -> update_metric_datum(m, options) end)
       |> export_metrics(options[:namespace], options[:aws])
 
     Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
@@ -77,6 +74,7 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
 
     [aws: aws_options(),
      period: Application.get_env(@appname, :export_period, @default_export_period),
+     resolution: Application.get_env(@appname, :storage_resolution, @default_resolution),
      namespace: Application.get_env(@appname, :namespace, @default_namespace)
        |> to_string()
        |> String.trim("\""),
@@ -128,6 +126,15 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
     else
       {metric, options}
     end
+  end
+
+  # Add cluster name and StorageResolution parameters to MetricDatum
+  defp update_metric_datum(metric_datum, options) do
+    cluster = RabbitNodes.cluster_name()
+
+    metric_datum
+      |> Keyword.update(:dimensions, [], &(([{"Cluster", cluster} | &1])))
+      |> Keyword.put(:storage_resolution, options[:resolution])
   end
 
   # Export the collected metrics splitting the requests in chunks according to AWS CW limits
