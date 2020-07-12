@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2019, Matteo Cafasso.
+# Copyright (c) 2019-2020, Matteo Cafasso.
 # All rights reserved.
 
 defmodule RabbitMQCloudWatchExporter.NodeMetrics do
@@ -21,11 +21,14 @@ defmodule RabbitMQCloudWatchExporter.NodeMetrics do
   @doc """
   Collect Node metrics in AWS CW format.
   """
-  @spec collect_node_metrics([regex]) :: List.t
-  def collect_node_metrics(_regex_patterns) do
+  @spec collect_node_metrics(Keyword.t) :: List.t
+  def collect_node_metrics(options) do
+    filter = Keyword.get(options, :export_metrics, [])
+
     list_nodes()
       |> RabbitMGMTDB.augment_nodes(Common.no_range)
       |> Enum.flat_map(&node_metrics/1)
+      |> Common.filter_metrics(filter)
   end
 
   defp node_metrics(node) do

@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2019, Matteo Cafasso.
+# Copyright (c) 2019-2020, Matteo Cafasso.
 # All rights reserved.
 
 defmodule RabbitMQCloudWatchExporter.ChannelMetrics do
@@ -20,18 +20,20 @@ defmodule RabbitMQCloudWatchExporter.ChannelMetrics do
   @doc """
   Collect Channel metrics in AWS CW format.
   """
-  @spec collect_channel_metrics([regex]) :: List.t
-  def collect_channel_metrics(regex_patterns) do
-    regex = Keyword.get(regex_patterns, :channel, ~r/.*/)
+  @spec collect_channel_metrics(Keyword.t) :: List.t
+  def collect_channel_metrics(options) do
+    regex = Keyword.get(options, :export_regex, ~r/.*/)
+    filter = Keyword.get(options, :export_metrics, [])
 
     RabbitMGMTDB.get_all_channels(Common.no_range)
       |> Enum.filter(fn(c) -> String.match?(Keyword.get(c, :name, ""), regex) end)
       |> Enum.flat_map(&channel_metrics/1)
+      |> Common.filter_metrics(filter)
   end
 
   defp channel_metrics(channel) do
     metrics =
-      [
+     [
         [metric_name: "MessagesUnacknowledged",
          unit: "Count",
          value: Keyword.get(channel, :messages_unacknowledged, 0)],
@@ -50,7 +52,7 @@ defmodule RabbitMQCloudWatchExporter.ChannelMetrics do
         [metric_name: "GlobalPrefetchCount",
          unit: "Count",
          value: Keyword.get(channel, :global_prefetch_count, 0)]
-      ]
+     ]
     dimensions = [{"Metric", "Channel"},
                   {"Connection", channel
                     |> Keyword.get(:connection_details, [])

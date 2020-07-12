@@ -1,28 +1,17 @@
+%% General Options
+%% ===============
+
 {mapping, "cloudwatch_exporter.namespace", "rabbitmq_cloudwatch_exporter.namespace",
 [{datatype, string}]}.
 
 {mapping, "cloudwatch_exporter.export_period", "rabbitmq_cloudwatch_exporter.export_period",
 [{datatype, integer}]}.
 
-{mapping, "cloudwatch_exporter.metrics.$metric", "rabbitmq_cloudwatch_exporter.metrics",
-[{datatype, atom}]}.
-{translation, "rabbitmq_cloudwatch_exporter.metrics",
-fun(Conf) ->
-    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics", Conf),
-    lists:reverse([V || {_, V} <- Settings])
-end}.
+{mapping, "cloudwatch_exporter.storage_resolution", "rabbitmq_cloudwatch_exporter.storage_resolution",
+[{datatype, integer}]}.
 
-{mapping, "cloudwatch_exporter.export_regex.exchange", "rabbitmq_cloudwatch_exporter.export_regex.exchange",
-[{datatype, string}]}.
-
-{mapping, "cloudwatch_exporter.export_regex.queue", "rabbitmq_cloudwatch_exporter.export_regex.queue",
-[{datatype, string}]}.
-
-{mapping, "cloudwatch_exporter.export_regex.connection", "rabbitmq_cloudwatch_exporter.export_regex.connection",
-[{datatype, string}]}.
-
-{mapping, "cloudwatch_exporter.export_regex.channel", "rabbitmq_cloudwatch_exporter.export_regex.channel",
-[{datatype, string}]}.
+%% AWS Options
+%% ===========
 
 {mapping, "cloudwatch_exporter.aws.region", "rabbitmq_cloudwatch_exporter.aws.region",
 [{datatype, string}]}.
@@ -31,4 +20,135 @@ end}.
 [{datatype, string}]}.
 
 {mapping, "cloudwatch_exporter.aws.secret_access_key", "rabbitmq_cloudwatch_exporter.aws.secret_access_key",
+[{datatype, string}]}.
+
+%% Metric Options
+%% ==============
+
+%% Overview
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.overview.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.overview.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.overview.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.overview.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.overview.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.overview.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+%% VHost
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.vhost.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.vhost.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.vhost.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.vhost.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.vhost.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.vhost.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+%% Node
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.node.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.node.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.node.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.node.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.node.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.node.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+%% Exchange
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.exchange.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.exchange.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.exchange.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.exchange.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.exchange.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.exchange.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+{mapping, "cloudwatch_exporter.metrics.exchange.export_regex",
+          "rabbitmq_cloudwatch_exporter.metrics.exchange.export_regex",
+[{datatype, string}]}.
+
+%% Queue
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.queue.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.queue.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.queue.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.queue.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.queue.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.queue.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+{mapping, "cloudwatch_exporter.metrics.queue.export_regex",
+          "rabbitmq_cloudwatch_exporter.metrics.queue.export_regex",
+[{datatype, string}]}.
+
+%% Connection
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.connection.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.connection.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.connection.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.connection.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.connection.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.connection.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+{mapping, "cloudwatch_exporter.metrics.connection.export_regex",
+          "rabbitmq_cloudwatch_exporter.metrics.connection.export_regex",
+[{datatype, string}]}.
+
+%% Channel
+%% ----------------------------------------------------------------------------
+
+{mapping, "cloudwatch_exporter.metrics.channel.enable",
+          "rabbitmq_cloudwatch_exporter.metrics.channel.enable",
+[{datatype, atom}]}.
+
+{mapping, "cloudwatch_exporter.metrics.channel.export_metrics.$metric",
+          "rabbitmq_cloudwatch_exporter.metrics.channel.export_metrics",
+[{datatype, string}]}.
+{translation, "rabbitmq_cloudwatch_exporter.metrics.channel.export_metrics",
+fun(Conf) ->
+    Settings = cuttlefish_variable:filter_by_prefix("cloudwatch_exporter.metrics.channel.export_metrics", Conf),
+    lists:reverse([V || {_, V} <- Settings])
+end}.
+
+{mapping, "cloudwatch_exporter.metrics.channel.export_regex",
+          "rabbitmq_cloudwatch_exporter.metrics.channel.export_regex",
 [{datatype, string}]}.

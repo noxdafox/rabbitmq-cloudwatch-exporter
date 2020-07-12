@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2019, Matteo Cafasso.
+# Copyright (c) 2019-2020, Matteo Cafasso.
 # All rights reserved.
 
 defmodule RabbitMQCloudWatchExporter.Common do
@@ -24,10 +24,9 @@ defmodule RabbitMQCloudWatchExporter.Common do
   @doc """
   Collect common metrics in AWS CW format.
   """
-  @spec stats(List.t, Atom.t) :: List.t
-  def stats(list, stats_type) do
-    for {keyword, value} <- list,
-        Enum.member?(stats_type, keyword) do
+  @spec stats(List.t, List.t) :: List.t
+  def stats(metrics, type) do
+    for {keyword, value} <- metrics, Enum.member?(type, keyword) do
       [metric_name: keyword
         |> Atom.to_string()
         |> String.split("_")
@@ -36,6 +35,15 @@ defmodule RabbitMQCloudWatchExporter.Common do
        unit: "Count",
        value: value]
     end
+  end
+
+  @doc """
+  If filter is non empty, remove all metrics not in the filter.
+  """
+  @spec stats(List.t, List.t) :: List.t
+  def filter_metrics(metrics, []), do: metrics
+  def filter_metrics(metrics, filter) do
+    Enum.filter(metrics, fn(m) -> Enum.member?(filter, m[:metric_name]) end)
   end
 
   @doc """

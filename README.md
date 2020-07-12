@@ -1,6 +1,6 @@
 # RabbitMQ AWS CloudWatch exporter
 
-A plugin for exporting the metrics collected by the RabbitMQ Management Plugin to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/).
+A plugin for exporting RabbitMQ logs and metrics collected by the Management Plugin to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/).
 
 ## Installing
 
@@ -30,7 +30,30 @@ Then copy all the *.ez files inside the plugins folder to the [RabbitMQ plugins 
 [sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
 ```
 
-## Configuration
+## Exporting RabbitMQ logs to CloudWatch
+
+Together with the plugin is shipped a [Lager backend for CloudWatch](https://github.com/noxdafox/lager_cloudwatch) which allows to export the service logs to [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html).
+
+The handler configuration is explained in details in the RabbitMQ [logging configuration](https://www.rabbitmq.com/logging.html#advanced-configuration) guidelines.
+
+The following example configures the Lager backend to export all the logs from `info` level and above into the `RabbitMQ` log group. The node names will be used as log stream names.
+
+```erlang
+[{lager,
+  [{handlers, [{lager_cloudwatch_backend, [info, "RabbitMQ"]}]}]}].
+```
+
+More details regarding the backend configuration can be found in its [README](https://github.com/noxdafox/lager_cloudwatch).
+
+### AWS Credentials
+
+To resolve AWS credentials, the standard environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are looked up first. Otherwise, the EC2 instance role or ECS task role are employed.
+
+### AWS Region
+
+By default the logs are exported to the `us-east-1` AWS region. The region can be changed via the environment variable `AWS_DEFAULT_REGION`.
+
+## Exporting RabbitMQ metrics to CloudWatch
 
 ### AWS Credentials
 
@@ -73,57 +96,83 @@ Metrics are grouped in different categories described below. Each category must 
 `rabbitmq.conf` example.
 
 ```shell
-cloudwatch_exporter.metrics.1 = overview
-cloudwatch_exporter.metrics.2 = vhost
-cloudwatch_exporter.metrics.3 = node
+cloudwatch_exporter.metrics.overview.enable = true
+cloudwatch_exporter.metrics.vhost.enable = true
+# Omitting or setting a group to false is equivalent
+cloudwatch_exporter.metrics.node.enable = false
 ```
 
 `rabbitmq.config` example.
 
 ```erlang
 [{rabbitmq_cloudwatch_exporter,
-  [{metrics, [overview, vhost, node, exchange, queue, connection, channel]}]}].
+  [{metrics, [{overview, [{enable, true}]},
+              {vhost, [{enable, true}]},
+              {node, [{enable, false}]}]}]}].
 ```
 
-For `exchange`, `queue`, `connection` and `channel` groups, it is possible to control the names of the entities to be published via regular expressions.
+If a metrics group is enabled, all its metrics will be exported. The `export_metrics` configuration parameter allows to further limit which metrics of a specific group to export.
 
 `rabbitmq.conf` example.
 
 ```shell
-# Only export exchanges which names begin with foo or end with bar
-cloudwatch_exporter.export_regex.exchange = "foo.*|.*bar"
-# Exclude server-named queues
-cloudwatch_exporter.export_regex.queue = "^(?!amq.gen-.*).*$"
+cloudwatch_exporter.metrics.exchange.enable = true
+cloudwatch_exporter.metrics.exchange.export_metrics.1 = "PublishIn"
+cloudwatch_exporter.metrics.exchange.export_metrics.2 = "PublishOut"
 ```
 
 `rabbitmq.config` example.
 
 ```erlang
 [{rabbitmq_cloudwatch_exporter,
-  [{export_regex, [{exchange, "foo.*|.*bar"},
-                   {queue, "^(?!amq.gen-.*).*$"}]}]}].
+  [{metrics, [{exchange, [{enable, true},
+                          {export_metrics, ["PublishIn", "PublishOut"]}]}]}]}].
 ```
 
-Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format).
+For `exchange`, `queue`, `connection` and `channel` metrics groups, it is possible to control the names of the entities to be published via regular expressions.
+
+`rabbitmq.conf` example.
+
+```shell
+cloudwatch_exporter.metrics.exchange.enable = true
+# Only export exchanges which names begin with foo or end with bar
+cloudwatch_exporter.metrics.exchange.export_regex = "foo.*|.*bar"
+
+cloudwatch_exporter.metrics.queue.enable = true
+# Exclude server-named queues
+cloudwatch_exporter.metrics.queue.export_regex = "^(?!amq.gen-.*).*$"
+```
+
+`rabbitmq.config` example.
+
+```erlang
+[{rabbitmq_cloudwatch_exporter,
+  [{metrics, [{exchange, [{enable, true},
+                          {export_regex, "foo.*|.*bar"}]},
+              {queue, [{enable, true},
+                       {export_regex, "^(?!amq.gen-.*).*$"}]}]}]}].
+```
+
+Metrics are exported every minute. The export period can be expressed in seconds via the `cloudwatch_exporter.export_period` configuration parameter (`rabbitmq_cloudwatch_exporter.export_period` in `rabbitmq.config` format). CloudWatch metrics have a [standard resolution](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics) of one minute. Therefore, publishing more than once per minute will results in the metrics being aggregated on the receiving end. The `cloudwatch_exporter.storage_resolution` configuration parameter (`rabbitmq_cloudwatch_exporter.storage_resolution` in `rabbitmq.config` format) allows to decrease the aggregation period to 1, 5, 10 or 30 seconds.
 
 Lastly, the [AWS CloudWatch namespace](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Namespace) can be controlled via the `cloudwatch_exporter.namespace` configuration parameter (`rabbitmq_cloudwatch_exporter.namespace` in `rabbitmq.config` format). The default value is `RabbitMQ`.
 
-## Metrics
+### Metrics
 
 Metrics are grouped in different categories. All the metrics grouped within a category are characterised by a set of [dimensions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch_concepts.html#Dimension) which help to identify their belonging.
 
 As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pricing/) per each metric, the CloudWatch Exporter Plugin exports a limited subset of metrics which are deemed relevant. If a particular metric is missing, please open an [Issue Ticket](https://github.com/noxdafox/rabbitmq-cloudwatch-exporter/issues) or submit a [Pull Request](https://github.com/noxdafox/rabbitmq-cloudwatch-exporter/pulls) to add it to the exported ones. For the same rationale, the CloudWatch Exporter Plugin only exports metrics from the categories which have been enabled in the configuration file.
 
-### Overview
+#### Overview
 
-#### Dimensions
+##### Dimensions
 
 | Name        | Description       |
 | ----------- | ----------------- |
 | Metric      | "ClusterOverview" |
 | Cluster     | Cluster name      |
 
-#### Metrics
+##### Metrics
 
 | Name                       | Description                                                  |
 | -------------------------- | ------------------------------------------------------------ |
@@ -142,9 +191,9 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Redeliver                  | Messages redelivered                                         |
 | ReturnUnroutable           | Messages returned as non routable                            |
 
-### VHost
+#### VHost
 
-#### Dimensions
+##### Dimensions
 
 | Name        | Description       |
 | ----------- | ----------------- |
@@ -152,7 +201,7 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Cluster     | Cluster name      |
 | VHost       | Virtual Host name |
 
-#### Metrics
+##### Metrics
 
 | Name                       | Description                                                  |
 | -------------------------- | ------------------------------------------------------------ |
@@ -171,9 +220,9 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Redeliver                  | Messages redelivered                                         |
 | ReturnUnroutable           | Messages returned as non routable                            |
 
-### Node
+#### Node
 
-#### Dimensions
+##### Dimensions
 
 | Name        | Description              |
 | ----------- | ------------------------ |
@@ -183,7 +232,7 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Type        | Node type (disk\|memory) |
 | Limit       | Limit when applicable    |
 
-#### Metrics
+##### Metrics
 
 | Name                    | Description                                  |
 | ----------------------- | -------------------------------------------- |
@@ -201,9 +250,9 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | MnesiaRamTransactions   | Mnesia transaction count on memory tables    |
 | MnesiaDiskTransactions  | Mnesia transaction count on disk tables      |
 
-### Exchange
+#### Exchange
 
-#### Dimensions
+##### Dimensions
 
 | Name        | Description                                  |
 | ----------- | -------------------------------------------- |
@@ -213,16 +262,16 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Type        | Exchange type (direct\|fanout\|...)          |
 | VHost       | VHost where the exchange belongs             |
 
-#### Metrics
+##### Metrics
 
 | Name                    | Description                                  |
 | ----------------------- | -------------------------------------------- |
 | PublishIn               | Messages published within the exchange       |
 | PublishOut              | Messages published by the exchange           |
 
-### Queue
+#### Queue
 
-#### Dimensions
+##### Dimensions
 
 | Name        | Description                       |
 | ----------- | --------------------------------- |
@@ -231,7 +280,7 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Queue       | Queue name                        |
 | VHost       | VHost where the queue belongs     |
 
-#### Metrics
+##### Metrics
 
 | Name                       | Description                                                                      |
 | -------------------------- | -------------------------------------------------------------------------------- |
@@ -251,9 +300,9 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Publish                    | Messages published within the queue                                              |
 | Redeliver                  | Messages redelivered                                                             |
 
-### Connection
+#### Connection
 
-#### Dimensions
+##### Dimensions
 
 | Name                    | Description                                      |
 | ----------------------- | ------------------------------------------------ |
@@ -266,7 +315,7 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | User                    | Username used to connect                         |
 | AuthMechanism           | Employed authentication mechanism                |
 
-#### Metrics
+##### Metrics
 
 | Name                    | Description                                   |
 | ----------------------- | --------------------------------------------- |
@@ -276,9 +325,9 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Received                | Packets received                              |
 | BytesReceived           | Bytes received                                |
 
-### Channel
+#### Channel
 
-#### Dimensions
+##### Dimensions
 
 | Name                    | Description                                      |
 | ----------------------- | ------------------------------------------------ |
@@ -289,7 +338,7 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | VHost                   | VHost where the connection is attached to        |
 | User                    | Username used to connect                         |
 
-#### Metrics
+##### Metrics
 
 | Name                       | Description                                                  |
 | -------------------------- | ------------------------------------------------------------ |
