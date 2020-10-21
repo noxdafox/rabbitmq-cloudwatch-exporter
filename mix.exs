@@ -26,7 +26,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       {:ex_aws_cloudwatch, "~> 2.0.4"},
       {:singleton, "~> 1.2.0"},
       {:poison, "~> 3.0"},
-      {:hackney, "~> 1.15.2"},
+      {:hackney, "~> 1.16.0"},
       {
         :rabbit,
         path: Path.join(deps_dir, "rabbit"),
