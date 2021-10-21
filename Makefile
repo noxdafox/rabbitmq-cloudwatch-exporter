@@ -2,7 +2,7 @@ PROJECT = rabbitmq_cloudwatch_exporter
 
 DEPS = rabbit_common rabbit rabbitmq_management rabbitmq_management_agent lager_cloudwatch
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
-dep_lager_cloudwatch = hex 0.1.1
+dep_lager_cloudwatch = hex 0.1.2
 
 elixir_srcs := mix.exs
 
