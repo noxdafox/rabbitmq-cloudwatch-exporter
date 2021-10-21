@@ -25,7 +25,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       {:ex_aws, "~> 2.2.1"},
       {:ex_aws_cloudwatch, "~> 2.0.4"},
       {:singleton, "~> 1.2.0"},
-      {:poison, "~> 3.0"},
+      {:jason, "~> 1.2"},
       {:hackney, "~> 1.16.0"},
       {
         :rabbit,
