@@ -22,7 +22,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
 
   defp deps(deps_dir) do
     [
-      {:ex_aws, "~> 2.2.1"},
+      {:ex_aws, "~> 2.2.9"},
       {:ex_aws_cloudwatch, "~> 2.0.4"},
       {:singleton, "~> 1.2.0"},
       {:jason, "~> 1.2"},
