@@ -7,8 +7,8 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       version: "1.0.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
-      deps_path: "deps",
       deps: deps("deps"),
+      deps_path: System.get_env("DEPS_DIR", "deps"),
       aliases: aliases()
     ]
   end
@@ -22,29 +22,12 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
 
   defp deps(deps_dir) do
     [
-      {:ex_aws, "~> 2.3.2"},
+      {:ex_aws, "~> 2.5.7"},
       {:ex_aws_cloudwatch, "~> 2.0.4"},
-      {:singleton, "~> 1.2.0"},
-      {:jason, "~> 1.3"},
-      {:hackney, "~> 1.16.0"},
-      {
-        :rabbit,
-        path: Path.join(deps_dir, "rabbit"),
-        compile: "true",
-        override: true
-      },
-      {
-        :rabbit_common,
-        path: Path.join(deps_dir, "rabbit_common"),
-        compile: "true",
-        override: true
-      },
-      {
-        :rabbitmq_management,
-        path: Path.join(deps_dir, "rabbitmq_management"),
-        compile: "true",
-        override: true
-      }
+      {:singleton, "~> 1.4.0"},
+      {:jason, "~> 1.4.4"},
+      {:hackney, "~> 1.20.1"},
+      {:mix_task_archive_deps, "~> 1.0"}
     ]
   end
 
@@ -55,12 +38,13 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
         "deps.compile"
       ],
       make_app: [
-        "compile"
-      ],
-      make_all: [
         "deps.get",
         "deps.compile",
         "compile"
+      ],
+      make_archives: [
+        "archive.build.elixir",
+        "archive.build.all"
       ]
     ]
   end

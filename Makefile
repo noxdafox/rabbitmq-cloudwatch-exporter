@@ -1,19 +1,32 @@
 PROJECT = rabbitmq_cloudwatch_exporter
+PROJ_VSN = $(shell $(MIX) eval 'Mix.Project.config()[:version] |> IO.puts()')
 
 DEPS = rabbit_common rabbit rabbitmq_management rabbitmq_management_agent lager_cloudwatch
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
 dep_lager_cloudwatch = hex 0.1.2
 
-elixir_srcs := mix.exs
+# Mix customizations
+MIX_ENV      ?= dev
+override MIX := mix
+elixir_srcs  := mix.exs
+
+# RMQ `dist` target removes anything within the `plugins` folder
+# which is not managed by erlang.mk.
+# We need to instruct the `rabbitmq-dist:do-dist` target to not
+# remove our plugin and related dependencies.
+EXTRA_DIST_EZS = $(shell find $(PWD)/plugins -name *.ez)
 
 app:: $(elixir_srcs) deps
-	$(MIX) make_all
+	$(MIX) make_app
 
-# FIXME: Use erlang.mk patched for RabbitMQ, while waiting for PRs to be
-# reviewed and merged.
+dist:: app
+	mkdir -p $(DIST_DIR)
+	$(MIX) archive.build.elixir
+	$(MIX) archive.build -o $(DIST_DIR)/$(PROJECT)-$(PROJ_VSN).ez
+	cp -r _build/$(MIX_ENV)/archives/elixir-*.ez $(DIST_DIR)
 
-ERLANG_MK_REPO = https://github.com/rabbitmq/erlang.mk.git
-ERLANG_MK_COMMIT = rabbitmq-tmp
+clean::
+	@rm -fr _build
 
 include rabbitmq-components.mk
 include erlang.mk
