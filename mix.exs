@@ -27,7 +27,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       {:singleton, "~> 1.4.0"},
       {:jason, "~> 1.4.4"},
       {:hackney, "~> 1.20.1"},
-      {:mix_task_archive_deps, "~> 1.0"}
+      {:mix_task_archive_deps, github: "noxdafox/rabbitmq-cloudwatch-exporter"}
     ]
   end
 
@@ -43,6 +43,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
         "compile"
       ],
       make_archives: [
+        "archive.build.deps",
         "archive.build.elixir",
         "archive.build.all"
       ]
