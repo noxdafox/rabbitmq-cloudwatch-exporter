@@ -21,9 +21,7 @@ app:: $(elixir_srcs) deps
 
 dist:: app
 	mkdir -p $(DIST_DIR)
-	$(MIX) archive.build.elixir
-	$(MIX) archive.build -o $(DIST_DIR)/$(PROJECT)-$(PROJ_VSN).ez
-	cp -r _build/$(MIX_ENV)/archives/elixir-*.ez $(DIST_DIR)
+	$(MIX) make_archives
 
 clean::
 	@rm -fr _build
