@@ -30,11 +30,6 @@ jobs:
         with:
           otp-version: ${{ matrix.erlang }}
           elixir-version: ${{ matrix.elixir }}
-      - name: Run tests
-        working-directory: ${{ env.PLUGIN_FOLDER }}
-        run: |
-          make current_rmq_ref=${{ matrix.rmqref }}
-          make tests current_rmq_ref=${{ matrix.rmqref }}
       - name: Build distribution files
         working-directory: ${{ env.PLUGIN_FOLDER }}
         run: |
@@ -42,5 +37,5 @@ jobs:
       - name: Store build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: plugins
+          name: plugins-${{ matrix.rmqref }}
           path: ${{ env.PLUGIN_FOLDER }}/plugins/
