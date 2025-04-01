@@ -12,6 +12,8 @@ Enable the plugin:
 [sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
 ```
 
+you can also easily install the plugin inside RabbitMQ docker image. [Dockerfile](Dockerfile)
+
 ## Building from Source
 
 Please see RabbitMQ Plugin Development guide.
@@ -24,7 +26,7 @@ cd rabbitmq-cloudwatch-exporter
 make dist
 ```
 
-Then copy all the *.ez files inside the plugins folder to the [RabbitMQ plugins directory](http://www.rabbitmq.com/relocate.html) and enable the plugin:
+Then copy all the \*.ez files inside the plugins folder to the [RabbitMQ plugins directory](http://www.rabbitmq.com/relocate.html) and enable the plugin:
 
 ```bash
 [sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
@@ -167,118 +169,118 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 ##### Dimensions
 
-| Name        | Description       |
-| ----------- | ----------------- |
-| Metric      | "ClusterOverview" |
-| Cluster     | Cluster name      |
+| Name    | Description       |
+| ------- | ----------------- |
+| Metric  | "ClusterOverview" |
+| Cluster | Cluster name      |
 
 ##### Metrics
 
-| Name                       | Description                                                  |
-| -------------------------- | ------------------------------------------------------------ |
-| Messages                   | Total message count within the cluster                       |
-| MessagesReady              | Messages ready for deliver within the cluster                |
-| MessagesUnacknowledged     | Messages pending for acknowledgement within the cluster      |
-| Ack                        | Messages acknowledged                                        |
-| Confirm                    | Messages confirmed to publishers                             |
-| Deliver                    | Messages delivered to consumers                              |
-| DeliverGet                 | Messages delivered to consumers via basic.get                |
-| DeliverNoAck               | Messages delivered to consumers without acknowledgment       |
-| Get                        | Amount of basic.get requests                                 |
-| GetEmpty                   | Amount of basic.get requests over empty queue                |
-| GetNoAck                   | Amount of basic.get requests without acknowledgement         |
-| Publish                    | Messages published within the channel                        |
-| Redeliver                  | Messages redelivered                                         |
-| ReturnUnroutable           | Messages returned as non routable                            |
+| Name                   | Description                                             |
+| ---------------------- | ------------------------------------------------------- |
+| Messages               | Total message count within the cluster                  |
+| MessagesReady          | Messages ready for deliver within the cluster           |
+| MessagesUnacknowledged | Messages pending for acknowledgement within the cluster |
+| Ack                    | Messages acknowledged                                   |
+| Confirm                | Messages confirmed to publishers                        |
+| Deliver                | Messages delivered to consumers                         |
+| DeliverGet             | Messages delivered to consumers via basic.get           |
+| DeliverNoAck           | Messages delivered to consumers without acknowledgment  |
+| Get                    | Amount of basic.get requests                            |
+| GetEmpty               | Amount of basic.get requests over empty queue           |
+| GetNoAck               | Amount of basic.get requests without acknowledgement    |
+| Publish                | Messages published within the channel                   |
+| Redeliver              | Messages redelivered                                    |
+| ReturnUnroutable       | Messages returned as non routable                       |
 
 #### VHost
 
 ##### Dimensions
 
-| Name        | Description       |
-| ----------- | ----------------- |
-| Metric      | "VHost"           |
-| Cluster     | Cluster name      |
-| VHost       | Virtual Host name |
+| Name    | Description       |
+| ------- | ----------------- |
+| Metric  | "VHost"           |
+| Cluster | Cluster name      |
+| VHost   | Virtual Host name |
 
 ##### Metrics
 
-| Name                       | Description                                                  |
-| -------------------------- | ------------------------------------------------------------ |
-| Messages                   | Total message count within the vhost                         |
-| MessagesReady              | Messages ready for deliver within the vhost                  |
-| MessagesUnacknowledged     | Messages pending for acknowledgement within the vhost        |
-| Ack                        | Messages acknowledged                                        |
-| Confirm                    | Messages confirmed to publishers                             |
-| Deliver                    | Messages delivered to consumers                              |
-| DeliverGet                 | Messages delivered to consumers via basic.get                |
-| DeliverNoAck               | Messages delivered to consumers without acknowledgment       |
-| Get                        | Amount of basic.get requests                                 |
-| GetEmpty                   | Amount of basic.get requests over empty queue                |
-| GetNoAck                   | Amount of basic.get requests without acknowledgement         |
-| Publish                    | Messages published within the channel                        |
-| Redeliver                  | Messages redelivered                                         |
-| ReturnUnroutable           | Messages returned as non routable                            |
+| Name                   | Description                                            |
+| ---------------------- | ------------------------------------------------------ |
+| Messages               | Total message count within the vhost                   |
+| MessagesReady          | Messages ready for deliver within the vhost            |
+| MessagesUnacknowledged | Messages pending for acknowledgement within the vhost  |
+| Ack                    | Messages acknowledged                                  |
+| Confirm                | Messages confirmed to publishers                       |
+| Deliver                | Messages delivered to consumers                        |
+| DeliverGet             | Messages delivered to consumers via basic.get          |
+| DeliverNoAck           | Messages delivered to consumers without acknowledgment |
+| Get                    | Amount of basic.get requests                           |
+| GetEmpty               | Amount of basic.get requests over empty queue          |
+| GetNoAck               | Amount of basic.get requests without acknowledgement   |
+| Publish                | Messages published within the channel                  |
+| Redeliver              | Messages redelivered                                   |
+| ReturnUnroutable       | Messages returned as non routable                      |
 
 #### Node
 
 ##### Dimensions
 
-| Name        | Description              |
-| ----------- | ------------------------ |
-| Metric      | "Node"                   |
-| Cluster     | Cluster name             |
-| Node        | Node name                |
-| Type        | Node type (disk\|memory) |
-| Limit       | Limit when applicable    |
+| Name    | Description              |
+| ------- | ------------------------ |
+| Metric  | "Node"                   |
+| Cluster | Cluster name             |
+| Node    | Node name                |
+| Type    | Node type (disk\|memory) |
+| Limit   | Limit when applicable    |
 
 ##### Metrics
 
-| Name                    | Description                                  |
-| ----------------------- | -------------------------------------------- |
-| Uptime                  | Node uptime in milliseconds                  |
-| Memory                  | Memory in use                                |
-| DiskFree                | Amount of free disk                          |
-| FileDescriptors         | Open file descriptors                        |
-| Sockets                 | Open sockets                                 |
-| Processes               | Erlang Processes                             |
-| IORead                  | I/O read count                               |
-| BytesIORead             | I/O read in bytes                            |
-| IOWrite                 | I/O write count                              |
-| BytesIOWrite            | I/O write in bytes                           |
-| IOSeek                  | I/O seek count                               |
-| MnesiaRamTransactions   | Mnesia transaction count on memory tables    |
-| MnesiaDiskTransactions  | Mnesia transaction count on disk tables      |
+| Name                   | Description                               |
+| ---------------------- | ----------------------------------------- |
+| Uptime                 | Node uptime in milliseconds               |
+| Memory                 | Memory in use                             |
+| DiskFree               | Amount of free disk                       |
+| FileDescriptors        | Open file descriptors                     |
+| Sockets                | Open sockets                              |
+| Processes              | Erlang Processes                          |
+| IORead                 | I/O read count                            |
+| BytesIORead            | I/O read in bytes                         |
+| IOWrite                | I/O write count                           |
+| BytesIOWrite           | I/O write in bytes                        |
+| IOSeek                 | I/O seek count                            |
+| MnesiaRamTransactions  | Mnesia transaction count on memory tables |
+| MnesiaDiskTransactions | Mnesia transaction count on disk tables   |
 
 #### Exchange
 
 ##### Dimensions
 
-| Name        | Description                                  |
-| ----------- | -------------------------------------------- |
-| Metric      | "Exchange"                                   |
-| Cluster     | Cluster name                                 |
-| Exchange    | Exchange name, `_` for the default exchange  |
-| Type        | Exchange type (direct\|fanout\|...)          |
-| VHost       | VHost where the exchange belongs             |
+| Name     | Description                                 |
+| -------- | ------------------------------------------- |
+| Metric   | "Exchange"                                  |
+| Cluster  | Cluster name                                |
+| Exchange | Exchange name, `_` for the default exchange |
+| Type     | Exchange type (direct\|fanout\|...)         |
+| VHost    | VHost where the exchange belongs            |
 
 ##### Metrics
 
-| Name                    | Description                                  |
-| ----------------------- | -------------------------------------------- |
-| PublishIn               | Messages published within the exchange       |
-| PublishOut              | Messages published by the exchange           |
+| Name       | Description                            |
+| ---------- | -------------------------------------- |
+| PublishIn  | Messages published within the exchange |
+| PublishOut | Messages published by the exchange     |
 
 #### Queue
 
 ##### Dimensions
 
-| Name        | Description                       |
-| ----------- | --------------------------------- |
-| Metric      | "Queue"                           |
-| Cluster     | Cluster name                      |
-| Queue       | Queue name                        |
-| VHost       | VHost where the queue belongs     |
+| Name    | Description                   |
+| ------- | ----------------------------- |
+| Metric  | "Queue"                       |
+| Cluster | Cluster name                  |
+| Queue   | Queue name                    |
+| VHost   | VHost where the queue belongs |
 
 ##### Metrics
 
@@ -304,58 +306,58 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 ##### Dimensions
 
-| Name                    | Description                                      |
-| ----------------------- | ------------------------------------------------ |
-| Metric                  | "Connection"                                     |
-| Cluster                 | Cluster name                                     |
-| Connection              | IP:Port -> IP:port                               |
-| Protocol                | Used protocol (AMQP 0-9-1\|AMQP 1.0\|STOMP\|...) |
-| Node                    | Node where the connection is attached to         |
-| VHost                   | VHost where the connection is attached to        |
-| User                    | Username used to connect                         |
-| AuthMechanism           | Employed authentication mechanism                |
+| Name          | Description                                      |
+| ------------- | ------------------------------------------------ |
+| Metric        | "Connection"                                     |
+| Cluster       | Cluster name                                     |
+| Connection    | IP:Port -> IP:port                               |
+| Protocol      | Used protocol (AMQP 0-9-1\|AMQP 1.0\|STOMP\|...) |
+| Node          | Node where the connection is attached to         |
+| VHost         | VHost where the connection is attached to        |
+| User          | Username used to connect                         |
+| AuthMechanism | Employed authentication mechanism                |
 
 ##### Metrics
 
-| Name                    | Description                                   |
-| ----------------------- | --------------------------------------------- |
-| Channels                | Opened channels count                         |
-| Sent                    | Packets sent                                  |
-| BytesSent               | Bytes sent                                    |
-| Received                | Packets received                              |
-| BytesReceived           | Bytes received                                |
+| Name          | Description           |
+| ------------- | --------------------- |
+| Channels      | Opened channels count |
+| Sent          | Packets sent          |
+| BytesSent     | Bytes sent            |
+| Received      | Packets received      |
+| BytesReceived | Bytes received        |
 
 #### Channel
 
 ##### Dimensions
 
-| Name                    | Description                                      |
-| ----------------------- | ------------------------------------------------ |
-| Metric                  | "Channel"                                        |
-| Cluster                 | Cluster name                                     |
-| Connection              | IP:Port -> IP:port                               |
-| Channel                 | IP:Port -> IP:port (channels on the connection)  |
-| VHost                   | VHost where the connection is attached to        |
-| User                    | Username used to connect                         |
+| Name       | Description                                     |
+| ---------- | ----------------------------------------------- |
+| Metric     | "Channel"                                       |
+| Cluster    | Cluster name                                    |
+| Connection | IP:Port -> IP:port                              |
+| Channel    | IP:Port -> IP:port (channels on the connection) |
+| VHost      | VHost where the connection is attached to       |
+| User       | Username used to connect                        |
 
 ##### Metrics
 
-| Name                       | Description                                                  |
-| -------------------------- | ------------------------------------------------------------ |
-| MessagesUnacknowledged     | Messages pending acknowledgement on the channel              |
-| MessagesUnconfirmed        | Messages unconfirmed on the channel                          |
-| MessagesUncommitted        | Messages uncommitted on the channel                          |
-| AknogwledgesUncommitted    | Acknowledgements uncommitted on the channel                  |
-| PrefetchCount              | Prefetch count (QoS) configured on the channel               |
-| GlobalPrefetchCount        | Global prefetch count (QoS) configured on the channel        |
-| Ack                        | Messages acknowledged                                        |
-| Confirm                    | Messages confirmed to publishers                             |
-| Deliver                    | Messages delivered to consumers                              |
-| DeliverGet                 | Messages delivered to consumers via basic.get                |
-| DeliverNoAck               | Messages delivered to consumers without acknowledgment       |
-| Get                        | Amount of basic.get requests                                 |
-| GetEmpty                   | Amount of basic.get requests over empty queue                |
-| GetNoAck                   | Amount of basic.get requests without acknowledgement         |
-| Publish                    | Messages published within the channel                        |
-| Redeliver                  | Messages redelivered                                         |
-| ReturnUnroutable           | Messages returned as non routable                            |
+| Name                    | Description                                            |
+| ----------------------- | ------------------------------------------------------ |
+| MessagesUnacknowledged  | Messages pending acknowledgement on the channel        |
+| MessagesUnconfirmed     | Messages unconfirmed on the channel                    |
+| MessagesUncommitted     | Messages uncommitted on the channel                    |
+| AknogwledgesUncommitted | Acknowledgements uncommitted on the channel            |
+| PrefetchCount           | Prefetch count (QoS) configured on the channel         |
+| GlobalPrefetchCount     | Global prefetch count (QoS) configured on the channel  |
+| Ack                     | Messages acknowledged                                  |
+| Confirm                 | Messages confirmed to publishers                       |
+| Deliver                 | Messages delivered to consumers                        |
+| DeliverGet              | Messages delivered to consumers via basic.get          |
+| DeliverNoAck            | Messages delivered to consumers without acknowledgment |
+| Get                     | Amount of basic.get requests                           |
+| GetEmpty                | Amount of basic.get requests over empty queue          |
+| GetNoAck                | Amount of basic.get requests without acknowledgement   |
+| Publish                 | Messages published within the channel                  |
+| Redeliver               | Messages redelivered                                   |
+| ReturnUnroutable        | Messages returned as non routable                      |
