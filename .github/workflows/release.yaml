@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download Build Artifacts
-        uses: actions/download-artifact@v4
+        uses: dawidd6/action-download-artifact@v9
         with:
           path: artifacts/
       - name: Create Release
@@ -18,4 +18,4 @@ jobs:
           generate_release_notes: true
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: artifacts/*.zip
+          files: artifacts/*
