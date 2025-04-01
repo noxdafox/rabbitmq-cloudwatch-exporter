@@ -1,0 +1,21 @@
+name: release
+
+on:
+  workflow_call:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: release ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          files: artifacts/*.zip
