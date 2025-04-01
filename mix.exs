@@ -4,7 +4,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
   def project do
     [
       app: :rabbitmq_cloudwatch_exporter,
-      version: "1.0.5",
+      version: get_version(),
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps("deps"),
@@ -20,6 +20,14 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
     ]
   end
 
+  # Get version directly from git tag
+  defp get_version do
+    {tag, 0} = System.cmd("git", ["describe", "--tags", "--abbrev=0"], stderr_to_stdout: true)
+    tag
+    |> String.trim()
+    |> String.replace_prefix("v", "") 
+  end
+
   defp deps(deps_dir) do
     [
       {:ex_aws, "~> 2.5.7"},
@@ -32,7 +40,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
   end
 
   defp archive_dir do
-    System.get_env("ARCHIVE_DIR", ".")
+    System.get_env("ARCHIVE_DIR", "plugins")
   end
   
   defp aliases do
