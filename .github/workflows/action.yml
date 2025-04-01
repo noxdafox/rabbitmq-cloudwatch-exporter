@@ -8,13 +8,16 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        erlang:
-          - '26.2'
-        elixir:
-          - '1.16.3'
-        rmqref:
-          - v3.13.x
-          - v4.0.x
+        include:
+          - erlang: "26.2"
+            elixir: "1.16.3"
+            rmqref: "v3.13.x"
+          - erlang: "26.2"
+            elixir: "1.17.3"
+            rmqref: "v4.0.x"
+          - erlang: "27.3.1"
+            elixir: "1.17.3"
+            rmqref: "v4.0.x"
     steps:
       - name: Checkout RabbitMQ Server
         uses: actions/checkout@v4
@@ -37,5 +40,5 @@ jobs:
       - name: Store build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: plugins-${{ matrix.rmqref }}
+          name: plugins-${{ matrix.rmqref }}-${{ matrix.erlang }}
           path: ${{ env.PLUGIN_FOLDER }}/plugins/
