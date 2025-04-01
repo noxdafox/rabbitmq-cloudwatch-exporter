@@ -11,6 +11,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v9
         with:
           path: artifacts/
+          skip_unpack: true
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -18,4 +19,4 @@ jobs:
           generate_release_notes: true
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: artifacts/*
+          files: artifacts/*.zip
