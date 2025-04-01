@@ -31,6 +31,10 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
     ]
   end
 
+  defp archive_dir do
+    System.get_env("ARCHIVE_DIR", ".")
+  end
+  
   defp aliases do
     [
       make_deps: [
@@ -43,9 +47,9 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
         "compile"
       ],
       make_archives: [
-        "archive.build.deps",
-        "archive.build.elixir",
-        "archive.build.all"
+        "archive.build.deps --destination=#{archive_dir()}",
+        "archive.build.elixir --destination=#{archive_dir()}",
+        "archive.build.all --destination=#{archive_dir()}"
       ]
     ]
   end

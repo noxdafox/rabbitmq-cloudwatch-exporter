@@ -1,20 +1,26 @@
 name: build
-on: [push, pull_request]
+on:
+  workflow_call:
+    inputs:
+      erlang:
+        required: true
+        type: string
+        default: "26.2"
+      elixir:
+        required: true
+        type: string
+        default: "1.16.3"
+      rmqref:
+        required: true
+        type: string
+        default: "v3.13.x"
+
 env:
   SERVER_FOLDER: rabbitmq-server
   PLUGIN_FOLDER: rabbitmq-server/deps/rabbitmq-cloudwatch-exporter
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        erlang:
-          - '26.2'
-        elixir:
-          - '1.16.3'
-        rmqref:
-          - v3.13.x
-          - v4.0.x
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout RabbitMQ Server
         uses: actions/checkout@v4
@@ -28,14 +34,14 @@ jobs:
       - name: Install Erlang and Elixir
         uses: erlef/setup-beam@v1
         with:
-          otp-version: ${{ matrix.erlang }}
-          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ inputs.erlang }}
+          elixir-version: ${{ inputs.elixir }}
       - name: Build distribution files
         working-directory: ${{ env.PLUGIN_FOLDER }}
         run: |
-          MIX_ENV=prod DIST_AS_EZS=yes make dist current_rmq_ref=${{ matrix.rmqref }}
+          MIX_ENV=prod DIST_AS_EZS=yes make dist current_rmq_ref=${{ inputs.rmqref }}
       - name: Store build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: plugins-${{ matrix.rmqref }}
+          name: plugins-${{ inputs.rmqref }}-${{ inputs.erlang }}
           path: ${{ env.PLUGIN_FOLDER }}/plugins/

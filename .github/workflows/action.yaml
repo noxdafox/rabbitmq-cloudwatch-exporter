@@ -1,0 +1,26 @@
+name: action
+on: [push]
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - erlang: "26.2"
+            elixir: "1.16.3"
+            rmqref: "v3.13.x"
+          - erlang: "26.2"
+            elixir: "1.17.3"
+            rmqref: "v4.0.x"
+          - erlang: "27.3.1"
+            elixir: "1.17.3"
+            rmqref: "v4.0.x"
+    uses: ./.github/workflows/build.yaml
+    with:
+      erlang: ${{ matrix.erlang }}
+      elixir: ${{ matrix.elixir }}
+      rmqref: ${{ matrix.rmqref }}
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    uses: ./.github/workflows/release.yaml
+    secrets: inherit
