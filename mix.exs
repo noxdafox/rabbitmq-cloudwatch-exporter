@@ -22,11 +22,11 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
 
   defp deps(deps_dir) do
     [
-      {:ex_aws, "~> 2.5.7"},
+      {:ex_aws, "~> 2.5.8"},
       {:ex_aws_cloudwatch, "~> 2.0.4"},
       {:singleton, "~> 1.4.0"},
       {:jason, "~> 1.4.4"},
-      {:hackney, "~> 1.20.1"},
+      {:hackney, "~> 1.23.0"},
       {:mix_task_archive_deps, github: "noxdafox/mix_task_archive_deps"}
     ]
   end
