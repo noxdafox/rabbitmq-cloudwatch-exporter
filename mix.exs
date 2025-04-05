@@ -4,7 +4,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
   def project do
     [
       app: :rabbitmq_cloudwatch_exporter,
-      version: "1.0.5",
+      version: "1.0.6",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps("deps"),
