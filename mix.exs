@@ -1,9 +1,11 @@
 defmodule RabbitMQCloudWatchExporter.Mixfile do
   use Mix.Project
 
+  @appname :rabbitmq_cloudwatch_exporter
+
   def project do
     [
-      app: :rabbitmq_cloudwatch_exporter,
+      app: @appname,
       version: "1.0.6",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -31,6 +33,10 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
     ]
   end
 
+  defp archive_dir do
+    "#{System.get_env("ARCHIVE_DIR", "plugins")}/#{@appname}"
+  end
+
   defp aliases do
     [
       make_deps: [
@@ -43,9 +49,9 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
         "compile"
       ],
       make_archives: [
-        "archive.build.deps",
-        "archive.build.elixir",
-        "archive.build.all"
+        "archive.build.deps --destination=#{archive_dir()}",
+        "archive.build.elixir --destination=#{archive_dir()}",
+        "archive.build.all --destination=#{archive_dir()}"
       ]
     ]
   end
