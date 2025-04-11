@@ -2,8 +2,10 @@ PROJECT = rabbitmq_cloudwatch_exporter
 PROJ_VSN = $(shell $(MIX) eval 'Mix.Project.config()[:version] |> IO.puts()')
 
 DEPS = rabbit_common rabbit rabbitmq_management rabbitmq_management_agent lager_cloudwatch
-DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
 dep_lager_cloudwatch = hex 0.1.2
+
+DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
+DEP_EARLY_PLUGINS = rabbit_common/mk/rabbitmq-early-plugin.mk
 
 # Mix customizations
 MIX_ENV      ?= dev
