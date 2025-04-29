@@ -29,7 +29,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       {:singleton, "~> 1.4.0"},
       {:jason, "~> 1.4.4"},
       {:hackney, "~> 1.23.0"},
-      {:mix_task_archive_deps, github: "rabbitmq/mix_task_archive_deps"}
+      {:mix_task_archive_deps, github: "rabbitmq/mix_task_archive_deps", runtime: false}
     ]
   end
 
