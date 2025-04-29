@@ -36,4 +36,33 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: plugins-rmq${{ matrix.PLATFORM.RMQREF }}-erl${{ matrix.PLATFORM.ERLVER }}-elx${{ matrix.PLATFORM.ELXVER }}
-          path: ${{ env.PLUGIN_FOLDER }}/plugins/
+          path: |
+            ${{ env.PLUGIN_FOLDER }}/plugins/elixir-${{ matrix.PLATFORM.ELXVER }}.*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/rabbitmq_cloudwatch_exporter-[0-9].*.ez
+            # Dependencies
+            ${{ env.PLUGIN_FOLDER }}/plugins/base16-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/certifi-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/configparser_ex-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/decimal-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/eini-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/erlcloud-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/ex_aws-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/ex_aws_cloudwatch-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/hackney-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/idna-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/jason-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/jsx-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/lager-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/lager_cloudwatch-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/lhttpc-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/logger-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/metrics-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/mime-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/mimerl-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/parse_trans-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/req-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/singleton-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/ssl_verify_fun-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/sweet_xml-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/telemetry-*.ez
+            ${{ env.PLUGIN_FOLDER }}/plugins/unicode_util_compat-*.ez
