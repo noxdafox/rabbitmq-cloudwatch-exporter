@@ -34,6 +34,11 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       {:decimal, "~> 2.0"},
       {:req, "~> 0.5.10"},
       {:sweet_xml, "~> 0.7"},
+      {:brotli, "~> 0.3.1"},
+      {:castore, "~> 1.0"},
+      {:ezstd, "~> 1.0"},
+      {:nimble_csv, "~> 1.0"},
+      {:plug, "~> 1.0"},
       # Build dependencies
       {:mix_task_archive_deps, github: "rabbitmq/mix_task_archive_deps", runtime: false}
     ]
@@ -43,7 +48,6 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
     [
       make_app: [
         "deps.get",
-        "deps.compile",
         "compile"
       ],
       make_archives: [
