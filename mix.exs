@@ -48,6 +48,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
     [
       make_app: [
         "deps.get",
+        "deps.compile",
         "compile"
       ],
       make_archives: [
