@@ -40,6 +40,11 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
     try do
       options = application_options()
 
+      RabbitLog.info(
+        "Exporting AWS CloudWatch metrics from collectors: ~p "
+        <> "every ~p seconds~n",
+        [Keyword.keys(options[:collectors]), options[:period]])
+
       Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
 
       {:ok, options}
@@ -51,11 +56,13 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
   end
 
   def handle_info(:export_metrics, options) do
-    options[:collectors]
+    exported = options[:collectors]
       |> Enum.flat_map(fn({c, o}) -> @collectors[c].(o) end)
       |> Enum.filter(fn(m) -> m[:value] != nil end)
       |> Enum.map(fn(m) -> update_metric_datum(m, options) end)
       |> export_metrics(options[:namespace], options[:aws])
+
+    RabbitLog.debug("Exported ~p metrics into AWS CloudWatch~n", [exported])
 
     Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
 
@@ -138,18 +145,21 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
   end
 
   # Export the collected metrics splitting the requests in chunks according to AWS CW limits
+  # Returns the number of exported metrics
   defp export_metrics(metrics, namespace, options) do
-    Enum.map(Enum.chunk_every(metrics, @request_chunk_size),
-      fn(chunk) ->
-        data = ExAws.Cloudwatch.put_metric_data(chunk, namespace)
+    for chunk <- Enum.chunk_every(metrics, @request_chunk_size) do
+      data = ExAws.Cloudwatch.put_metric_data(chunk, namespace)
 
-        case ExAws.request(data, options) do
-          {:ok, _} -> :ok
-          {:error, error} ->
-            RabbitLog.error(
-              "Unable to publish metrics to CloudWatch: ~p~n"
-              <> "Error: ~p", [chunk, error])
-        end
-      end)
+      case ExAws.request(data, options) do
+        {:ok, _} -> Enum.count(chunk)
+        {:error, error} ->
+          RabbitLog.error(
+            "Unable to publish metrics to CloudWatch: ~p~n"
+            <> "Error: ~p", [chunk, error])
+          0
+      end
+    end
+    |> List.flatten()
+    |> Enum.sum()
   end
 end
