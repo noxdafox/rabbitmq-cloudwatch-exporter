@@ -8,8 +8,28 @@
 defmodule RabbitMQCloudWatchExporter do
   use Application
 
-  def start(_type, _args) do
+  @impl true
+  def start(_, _) do
+    children = [
+      {Singleton.Supervisor, name: RabbitMQCloudWatchExporter.Singleton}
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one)
+
     Singleton.start_child(
-      RabbitMQCloudWatchExporter.Exporter, [], :rabbitmq_cloudwatch_exporter)
+      RabbitMQCloudWatchExporter.Singleton,
+      RabbitMQCloudWatchExporter.Exporter,
+      [],
+      :rabbitmq_cloudwatch_exporter
+    )
+  end
+
+  @impl true
+  def stop(_) do
+    Singleton.stop_child(
+      RabbitMQCloudWatchExporter.Singleton,
+      RabbitMQCloudWatchExporter.Exporter,
+      []
+    )
   end
 end
