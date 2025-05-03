@@ -1,6 +1,6 @@
 # RabbitMQ AWS CloudWatch exporter
 
-A plugin for exporting RabbitMQ logs and metrics collected by the Management Plugin to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/).
+A plugin for exporting RabbitMQ metrics collected by the Management Plugin to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/).
 
 ## Installing
 
@@ -30,28 +30,9 @@ Then copy all the *.ez files inside the plugins folder to the [RabbitMQ plugins 
 [sudo] rabbitmq-plugins enable rabbitmq_cloudwatch_exporter
 ```
 
-## Exporting RabbitMQ logs to CloudWatch
-
-Together with the plugin is shipped a [Lager backend for CloudWatch](https://github.com/noxdafox/lager_cloudwatch) which allows to export the service logs to [AWS CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html).
-
-The handler configuration is explained in details in the RabbitMQ [logging configuration](https://www.rabbitmq.com/logging.html#advanced-configuration) guidelines.
-
-The following example configures the Lager backend to export all the logs from `info` level and above into the `RabbitMQ` log group. The node names will be used as log stream names.
-
-```erlang
-[{lager,
-  [{handlers, [{lager_cloudwatch_backend, [info, "RabbitMQ"]}]}]}].
-```
-
-More details regarding the backend configuration can be found in its [README](https://github.com/noxdafox/lager_cloudwatch).
-
 ### AWS Credentials
 
 To resolve AWS credentials, the standard environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are looked up first. Otherwise, the EC2 instance role or ECS task role are employed.
-
-### AWS Region
-
-By default the logs are exported to the `us-east-1` AWS region. The region can be changed via the environment variable `AWS_DEFAULT_REGION`.
 
 ## Exporting RabbitMQ metrics to CloudWatch
 
