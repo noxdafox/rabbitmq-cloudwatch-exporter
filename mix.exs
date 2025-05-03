@@ -16,7 +16,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
   def application() do
     [
       # The Application needs to depend on `rabbit` in order to be detected as a plugin.
-      extra_applications: [:rabbit, :mnesia, :singleton],
+      extra_applications: [:rabbit],
       mod: {RabbitMQCloudWatchExporter, []},
       registered: [RabbitMQCloudWatchExporter]
     ]
