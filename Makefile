@@ -4,8 +4,7 @@ RABBITMQ_VERSION ?= v4.1.x
 current_rmq_ref = $(RABBITMQ_VERSION)
 
 # The Application needs to depend on `rabbit` in order to be detected as a plugin.
-DEPS = rabbit rabbitmq_management rabbitmq_management_agent lager_cloudwatch
-dep_lager_cloudwatch = hex 0.1.2
+DEPS = rabbit rabbitmq_management rabbitmq_management_agent
 
 DEP_PLUGINS = rabbit_common/mk/rabbitmq-plugin.mk
 DEP_EARLY_PLUGINS = rabbit_common/mk/rabbitmq-early-plugin.mk
