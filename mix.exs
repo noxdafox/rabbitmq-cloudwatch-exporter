@@ -30,6 +30,7 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
       # Optional dependencies of above packages
       {:jason, "~> 1.4.4"},
       {:hackney, "~> 1.23.0"},
+      {:jsx, "~> 3.1.0"},
       {:configparser_ex, "~> 4.0"},
       {:decimal, "~> 2.0"},
       {:req, "~> 0.5.10"},
