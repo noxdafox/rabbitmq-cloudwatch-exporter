@@ -40,15 +40,12 @@ jobs:
             ${{ env.PLUGIN_FOLDER }}/plugins/elixir-${{ matrix.PLATFORM.ELXVER }}.*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/rabbitmq_cloudwatch_exporter-[0-9].*.ez
             # Dependencies
-            ${{ env.PLUGIN_FOLDER }}/plugins/base16-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/brotli-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/castore-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/certifi-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/configparser_ex-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/decimal-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/eex-*.ez
-            ${{ env.PLUGIN_FOLDER }}/plugins/eini-*.ez
-            ${{ env.PLUGIN_FOLDER }}/plugins/erlcloud-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/ex_aws-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/ex_aws_cloudwatch-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/ezstd-*.ez
@@ -58,9 +55,6 @@ jobs:
             ${{ env.PLUGIN_FOLDER }}/plugins/idna-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/jason-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/jsx-*.ez
-            ${{ env.PLUGIN_FOLDER }}/plugins/lager-*.ez
-            ${{ env.PLUGIN_FOLDER }}/plugins/lager_cloudwatch-*.ez
-            ${{ env.PLUGIN_FOLDER }}/plugins/lhttpc-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/logger-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/metrics-*.ez
             ${{ env.PLUGIN_FOLDER }}/plugins/mime-*.ez
