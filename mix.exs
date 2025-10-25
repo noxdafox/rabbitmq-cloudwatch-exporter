@@ -24,14 +24,14 @@ defmodule RabbitMQCloudWatchExporter.Mixfile do
 
   defp deps() do
     [
-      {:ex_aws, "~> 2.5.8"},
+      {:ex_aws, "~> 2.6.0"},
       {:ex_aws_cloudwatch, "~> 2.0.4"},
       {:singleton, "~> 1.4.0"},
       # Optional dependencies of above packages
       {:jason, "~> 1.4.4"},
-      {:hackney, "~> 1.23.0"},
+      {:hackney, "~> 1.25.0"},
       {:jsx, "~> 3.1.0"},
-      {:configparser_ex, "~> 4.0"},
+      {:configparser_ex, "~> 5.0"},
       {:decimal, "~> 2.0"},
       {:req, "~> 0.5.10"},
       {:sweet_xml, "~> 0.7"},
