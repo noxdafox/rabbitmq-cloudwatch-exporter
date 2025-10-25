@@ -40,23 +40,23 @@ defmodule RabbitMQCloudWatchExporter.NodeMetrics do
       [metric_name: "Memory",
        unit: "Bytes",
        value: Keyword.get(node, :mem_used),
-       dimensions: node_dimensions(node, :mem_limit)],
+       dimensions: node_dimensions(node)],
       [metric_name: "DiskFree",
        unit: "Bytes",
        value: Keyword.get(node, :disk_free),
-       dimensions: node_dimensions(node, :disk_free_limit)],
+       dimensions: node_dimensions(node)],
       [metric_name: "FileDescriptors",
        unit: "Count",
        value: Keyword.get(node, :fd_used),
-       dimensions: node_dimensions(node, :fd_total)],
+       dimensions: node_dimensions(node)],
       [metric_name: "Sockets",
        unit: "Count",
        value: Keyword.get(node, :sockets_used),
-       dimensions: node_dimensions(node, :sockets_total)],
+       dimensions: node_dimensions(node)],
       [metric_name: "Processes",
        unit: "Count",
        value: Keyword.get(node, :proc_used),
-       dimensions: node_dimensions(node, :proc_total)],
+       dimensions: node_dimensions(node)],
       [metric_name: "IORead",
        unit: "Count",
        value: Keyword.get(node, :io_read_count),
@@ -106,9 +106,5 @@ defmodule RabbitMQCloudWatchExporter.NodeMetrics do
     [{"Metric", "Node"},
      {"Node", node |> Keyword.get(:name) |> Atom.to_string()},
      {"Type", node |> Keyword.get(:type) |> Atom.to_string()}]
-  end
-
-  defp node_dimensions(node, limit) do
-    [{"Limit", Keyword.get(node, limit)} | node_dimensions(node)]
   end
 end

@@ -211,7 +211,6 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 | Cluster     | Cluster name             |
 | Node        | Node name                |
 | Type        | Node type (disk\|memory) |
-| Limit       | Limit when applicable    |
 
 ##### Metrics
 
