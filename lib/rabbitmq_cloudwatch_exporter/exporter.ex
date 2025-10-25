@@ -12,8 +12,9 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
 
   use GenServer
 
+  require Logger
+
   alias :timer, as: Timer
-  alias :rabbit_log, as: RabbitLog
   alias :rabbit_nodes, as: RabbitNodes
   alias RabbitMQCloudWatchExporter.OverviewMetrics, as: OverviewMetrics
   alias RabbitMQCloudWatchExporter.VHostMetrics, as: VHostMetrics
@@ -40,17 +41,16 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
     try do
       options = application_options()
 
-      RabbitLog.info(
-        "Exporting AWS CloudWatch metrics from collectors: ~p "
-        <> "every ~p seconds~n",
-        [Keyword.keys(options[:collectors]), options[:period]])
+      Logger.info("Exporting metrics from collectors: " <>
+        "#{inspect(Keyword.keys(options[:collectors]))} " <>
+        "every #{options[:period]} seconds")
 
       Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
 
       {:ok, options}
     rescue
       error in Regex.CompileError ->
-        RabbitLog.error("Disabling rabbitmq_cloudwatch_exporter: ~p ~n", [error])
+        Logger.error("Disabling rabbitmq_cloudwatch_exporter: #{inspect(error)}")
         {:ok, :error}
     end
   end
@@ -62,7 +62,7 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
       |> Enum.map(fn(m) -> update_metric_datum(m, options) end)
       |> export_metrics(options[:namespace], options[:aws])
 
-    RabbitLog.debug("Exported ~p metrics into AWS CloudWatch~n", [exported])
+    Logger.debug("Exported #{exported} metrics into AWS CloudWatch")
 
     Process.send_after(self(), :export_metrics, Timer.seconds(options[:period]))
 
@@ -153,9 +153,8 @@ defmodule RabbitMQCloudWatchExporter.Exporter do
       case ExAws.request(data, options) do
         {:ok, _} -> Enum.count(chunk)
         {:error, error} ->
-          RabbitLog.error(
-            "Unable to publish metrics to CloudWatch: ~p~n"
-            <> "Error: ~p", [chunk, error])
+          Logger.error("Unable to publish metrics to CloudWatch: " <>
+            "#{inspect(chunk)}\nError: #{inspect(error)}")
           0
       end
     end
