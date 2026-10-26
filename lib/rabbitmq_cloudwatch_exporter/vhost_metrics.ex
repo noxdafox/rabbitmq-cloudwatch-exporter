@@ -14,6 +14,7 @@ defmodule RabbitMQCloudWatchExporter.VHostMetrics do
 
   alias :rabbit_vhost, as: RabbitVHost
   alias :rabbit_mgmt_db, as: RabbitMGMTDB
+  alias :rabbit_amqqueue, as: RabbitQueue
   alias RabbitMQCloudWatchExporter.Common, as: Common
 
   @type regex :: {Atom.t, Regex.t}
@@ -32,11 +33,30 @@ defmodule RabbitMQCloudWatchExporter.VHostMetrics do
   end
 
   defp vhost_metrics(vhost) do
+    vhost_name = Keyword.get(vhost, :name)
     dimensions = [{"Metric", "VHost"},
-                  {"VHost", Keyword.get(vhost, :name)}]
+                  {"VHost", vhost_name}]
 
     Common.stats(vhost, Common.message_counts)
       ++ Common.stats(Keyword.get(vhost, :message_stats, []), Common.message_stats)
+      ++ queue_count(vhost_name)
+      ++ queues_with_messages_ready(vhost_name)
       |> Enum.map(fn(m) -> m ++ [dimensions: dimensions] end)
+  end
+
+  defp queue_count(vhost_name) do
+    [[metric_name: "QueueCount",
+      unit: "Count",
+      value: RabbitQueue.count(vhost_name)]]
+  end
+
+  defp queues_with_messages_ready(vhost_name) do
+    value = vhost_name
+      |> RabbitQueue.info_all([:messages_ready])
+      |> Enum.count(fn(queue) -> Keyword.get(queue, :messages_ready, 0) > 0 end)
+
+    [[metric_name: "QueuesWithMessagesReady",
+      unit: "Count",
+      value: value]]
   end
 end

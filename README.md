@@ -186,6 +186,8 @@ As AWS CloudWatch charges a [monthly cost](https://aws.amazon.com/cloudwatch/pri
 
 | Name                       | Description                                                  |
 | -------------------------- | ------------------------------------------------------------ |
+| QueueCount                 | Number of queues declared within the vhost                   |
+| QueuesWithMessagesReady    | Queues with messages ready for deliver within the vhost      |
 | Messages                   | Total message count within the vhost                         |
 | MessagesReady              | Messages ready for deliver within the vhost                  |
 | MessagesUnacknowledged     | Messages pending for acknowledgement within the vhost        |
